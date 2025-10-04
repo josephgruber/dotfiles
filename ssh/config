@@ -1,3 +1,5 @@
+Include ~/.dotfiles/.local/.ssh/*
+
 Host *
     IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
@@ -14,5 +16,3 @@ Host aws-ec2-*
     IdentitiesOnly yes
     IdentityFile '/Users/josephgruber/Library/Application Support/Code/User/globalStorage/amazonwebservices.aws-toolkit-vscode/aws-ec2-key'
     User '%r'
-
-Include ~/.dotfiles/.local/.ssh/*
