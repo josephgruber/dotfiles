@@ -36,8 +36,9 @@ fi
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Enable once Rust is installed
-# . "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ] ; then
+    . "$HOME/.cargo/env"
+fi
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/profile.post.bash" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/profile.post.bash"
