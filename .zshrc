@@ -16,7 +16,6 @@ HISTFILE="$HOME/.zsh_history"
 # Environment Variables #
 # --------------------- #\
 export AWS_PAGER=
-export AWS_PROFILE=stage
 export BLOCKSIZE=1k
 export BUILDAH_FORMAT=docker
 export EDITOR="code --wait"
@@ -29,6 +28,9 @@ export VISUAL="$EDITOR"
 # Source Other Files #
 # ------------------ #
 zstyle :omz:plugins:iterm2 shell-integration yes # iTerm2 shell integration
+
+eval $(/opt/homebrew/bin/brew shellenv)
+
 
 # ------- #
 # Aliases #
@@ -52,8 +54,11 @@ alias which="which -a"
 # -------------------------- #
 # Node Version Manager (NVM) #
 # -------------------------- #
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+if [ -d "$HOME/.nvm" ] ; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+fi
 
 # ----------------- #
 # Shell Completions #
@@ -75,6 +80,15 @@ eval "$(uvx --generate-shell-completion zsh)"
 # ---------------- #
 chpwd() { ls -l --color=auto; }
 
+# ----- #
+# Pyenv #
+# ----- #
+if [ -d "$HOME/.pyenv" ] ; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init - zsh)"
+fi
+
 # ---------------- #
 # Direnv Settings #
 # ---------------- #
@@ -84,7 +98,7 @@ eval "$(direnv hook zsh)"
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # VSCode Integration
-[[ "TERM_PROGRAM" == "vscode" ]] && . "/Application/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
 
 eval "$(oh-my-posh init zsh --config '/Users/josephgruber/.dotfiles/themes/oh-my-posh.json')"
 
