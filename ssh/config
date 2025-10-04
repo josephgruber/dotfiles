@@ -15,4 +15,4 @@ Host aws-ec2-*
     IdentityFile '/Users/josephgruber/Library/Application Support/Code/User/globalStorage/amazonwebservices.aws-toolkit-vscode/aws-ec2-key'
     User '%r'
 
-Include ~/.dotfiles/.local/.ssh/config
+Include ~/.dotfiles/.local/.ssh/*
