@@ -53,6 +53,7 @@ alias which="which -a"
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+export FZF_DEFAULT_COMMAND="fd --type f"
 
 # Setup and configure Node.js Version Manager (NVM)
 if [ -d "$HOME/.nvm" ] ; then
