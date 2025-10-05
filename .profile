@@ -34,8 +34,10 @@ if [ -d "$HOME/.dotfiles/bin" ] ; then
     PATH="$HOME/.dotfiles/bin:$PATH"
 fi
 
+# Add Homebrew shell environment variables
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# Add Cargo environment variables if it exists
 if [ -f "$HOME/.cargo/env" ] ; then
     . "$HOME/.cargo/env"
 fi
