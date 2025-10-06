@@ -15,12 +15,16 @@ autoload -U compinit
 compinit
 
 # Set zsh history file length
-HISTSIZE=10000
-SAVEHIST=10000
 HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000 # current session's history limit
+SAVEHIST=50000 # zsh saves this many lines from the in-memory history list to the history file upon shell exit
+HISTORY_IGNORE="(ls|cd|pwd|exit|cd|clear)*"
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
-setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY # history file is updated immediately after a command is entered
+setopt SHARE_HISTORY # allows multiple Zsh sessions to share the same command history
+setopt EXTENDED_HISTORY # records the time when each command was executed along with the command itself
+setopt APPENDHISTORY # ensures that each command entered in the current session is appended to the history file immediately after execution
 
 # Global environment variables
 export AWS_PAGER=
@@ -54,6 +58,7 @@ alias which="which -a"
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND="fd --type f"
+# export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
 
 # Setup and configure Node.js Version Manager (NVM)
 if [ -d "$HOME/.nvm" ] ; then
