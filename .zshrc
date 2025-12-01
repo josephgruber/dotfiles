@@ -1,6 +1,5 @@
-# Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
 # Allow directory stacks
 setopt AUTO_PUSHD       # Push the old directory onto a stack
 setopt PUSHD_MINUS      # Swap the directory stack ordering
@@ -34,6 +33,7 @@ export DEFAULT_USER=$(whoami)
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="code --wait"
 export HOMEBREW_NO_ENV_HINTS=1
+export PIPENV_VENV_IN_PROJECT=1 # Create virtualenvs inside the project directory
 export PODMAN_COMPOSE_WARNING_LOGS=false
 export SSH_AUTH_SOCK="~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 export VISUAL="$EDITOR"
@@ -99,8 +99,8 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Initialize oh-my-posh with a custom theme
 eval $(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")
 
-# Local Overrides
+# Local Overrides. Keep at the bottom of this file.
 [ -f "${DOTFILES}/.local/.zshrc" ] && source "${DOTFILES}/.local/.zshrc"
 
-# Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
