@@ -11,7 +11,12 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 autoload -U bashcompinit
 bashcompinit
 autoload -U compinit
-compinit
+# Only check compinit cache once per day
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 # Set zsh history file length
 HISTFILE="$HOME/.zsh_history"
@@ -29,25 +34,24 @@ setopt APPENDHISTORY # ensures that each command entered in the current session 
 export AWS_PAGER=
 export BLOCKSIZE=1k
 export BUILDAH_FORMAT=docker
-export DEFAULT_USER=$(whoami)
+export DEFAULT_USER="$USER"
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="code --wait"
 export HOMEBREW_NO_ENV_HINTS=1
 export PIPENV_VENV_IN_PROJECT=1 # Create virtualenvs inside the project directory
 export PODMAN_COMPOSE_WARNING_LOGS=false
-export SSH_AUTH_SOCK="~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+export PYTHONSTARTUP=$DOTFILES/python/startup.py
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 export VISUAL="$EDITOR"
 
 # Global aliases
 alias cp="cp -iv"
-alias docker="podman"
-alias docker-compose="podman-compose"
 alias edit="code --wait"
 alias git_prune="git fetch --prune && git branch -vv | grep 'origin/.*: gone]' | awk '{print \$1}' | xargs git branch -d"
 alias gsm="git switch main && git fetch"
 alias ld="lazydocker"
 alias lg="lazygit"
-alias ls="eza -1 --color=auto --classify --group-directories-first --icons" # ls
+alias ls="eza -1 --color=auto --classify --group-directories-first --icons --git" # ls
 alias mkdir="mkdir -pv"
 alias mv="mv -iv"
 alias mwps="git push -u origin -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds"
@@ -56,15 +60,21 @@ alias untar="tar -zxvf"
 alias which="which -a"
 
 # Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
+eval "$(fzf --zsh)"
 export FZF_DEFAULT_COMMAND="fd --type f"
 # export FZF_DEFAULT_COMMAND='ag --hidden -g ""'
 
-# Setup and configure Node.js Version Manager (NVM)
+# Setup and configure Node.js Version Manager (NVM) via lazy load
 if [ -d "$HOME/.nvm" ] ; then
     export NVM_DIR="$HOME/.nvm"
-    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+    export PATH="$NVM_DIR/versions/node/$(cat $NVM_DIR/alias/default 2>/dev/null || echo 'system')/bin:$PATH"
+    # Lazy load nvm when needed
+    nvm() {
+        unset -f nvm
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        nvm "$@"
+    }
 fi
 
 # Custom shell completions
@@ -77,11 +87,16 @@ eval "$(uvx --generate-shell-completion zsh)"
 # Custom functions
 chpwd() { ls -l --color=auto; }
 
-# Setup and configure pyenv
+# Setup and configure pyenv (lazy-loaded to avoid lock issues)
 if [ -d "$HOME/.pyenv" ] ; then
     export PYENV_ROOT="$HOME/.pyenv"
-    [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init - zsh)"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    # Lazy load pyenv
+    pyenv() {
+        unset -f pyenv
+        eval "$(command pyenv init - zsh)"
+        pyenv "$@"
+    }
 fi
 
 # iTerm2 shell integration
@@ -91,13 +106,15 @@ fi
 eval "$(direnv hook zsh)"
 export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Cache brew prefix to avoid subprocess
+BREW_PREFIX="/opt/homebrew"
+source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # VSCode Integration
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
 
 # Initialize oh-my-posh with a custom theme
-eval $(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")
+eval "$(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")"
 
 # Local Overrides. Keep at the bottom of this file.
 [ -f "${DOTFILES}/.local/.zshrc" ] && source "${DOTFILES}/.local/.zshrc"

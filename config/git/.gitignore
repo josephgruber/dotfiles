@@ -513,3 +513,5 @@ terragrunt-debug.tfvars.json
 
 # Custom Rules
 NOTES.md
+.claude/
+.rumdl_cache/
