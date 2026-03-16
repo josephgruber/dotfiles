@@ -39,7 +39,7 @@ export DOTFILES="$HOME/.dotfiles"
 export EDITOR="code --wait"
 export HOMEBREW_NO_ENV_HINTS=1
 export PODMAN_COMPOSE_WARNING_LOGS=false
-export PYTHONSTARTUP=$DOTFILES/python/startup.py
+export PYTHONSTARTUP=$DOTFILES/config/python/startup.py
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 export VISUAL="$EDITOR"
 
