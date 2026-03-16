@@ -1,5 +1,3 @@
-# Kiro CLI pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
 # Allow directory stacks
 setopt AUTO_PUSHD       # Push the old directory onto a stack
 setopt PUSHD_MINUS      # Swap the directory stack ordering
@@ -118,6 +116,3 @@ eval "$(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")"
 
 # Local Overrides. Keep at the bottom of this file.
 [ -f "${DOTFILES}/.local/.zshrc" ] && source "${DOTFILES}/.local/.zshrc"
-
-# Kiro CLI post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

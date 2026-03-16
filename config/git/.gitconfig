@@ -79,7 +79,7 @@
     conflicts = diff --name-only --diff-filter=U
     dag = log --graph --format='format: %C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
     delete-merged = !git fetch && git branch --merged | egrep -v 'master' | xargs git branch -d
-    delete-local = !git branch | grep -v 'main' | xargs git branch -D
+    delete-local = !git branch | grep -v 'main' | grep -v 'develop' | xargs git branch -D
     last = log -1 HEAD
     lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
     lg = log --color --graph --pretty='format: %C(red)%h%C(reset) %C(yellow)%d%C(reset) %s %C(green)(%cr) %C(bold blue)<%an>%C(reset)' --abbrev-commit
