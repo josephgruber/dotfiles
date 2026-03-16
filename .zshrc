@@ -1,3 +1,5 @@
+eval "$(brew shellenv)"
+
 # Allow directory stacks
 setopt AUTO_PUSHD       # Push the old directory onto a stack
 setopt PUSHD_MINUS      # Swap the directory stack ordering
@@ -36,7 +38,6 @@ export DEFAULT_USER="$USER"
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="code --wait"
 export HOMEBREW_NO_ENV_HINTS=1
-export PIPENV_VENV_IN_PROJECT=1 # Create virtualenvs inside the project directory
 export PODMAN_COMPOSE_WARNING_LOGS=false
 export PYTHONSTARTUP=$DOTFILES/python/startup.py
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"

@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.vitorgalvao.alfred.strongpassword</string>
+	<key>connections</key>
+	<dict>
+		<key>C6606FF9-AF38-46DB-B38D-1EB88FBCC2A3</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>E6F0B2B7-89AE-4F9B-9067-32C69F383F34</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>E6F0B2B7-89AE-4F9B-9067-32C69F383F34</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>05A087A9-927C-4EE7-B6E6-BDD10903ACB4</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>C403687E-4B6E-492D-9C6E-A8A05E5A4DE9</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>E321D95F-AB1D-45F5-AFA2-DFAF5B63A754</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>FBCEB3A5-83C2-431B-84FD-DDC9BDE5CB57</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>E6F0B2B7-89AE-4F9B-9067-32C69F383F34</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Vítor Galvão</string>
+	<key>description</key>
+	<string>Generate random and word-based passwords</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Strong Password</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:random_keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Generating passwords…</string>
+				<key>script</key>
+				<string>function make_item {
+  local -r pass_length="${1}"
+  local -r special_set='A-Za-z0-9!@#$%^&amp;*()_+-=[]{}|;:,.&lt;&gt;?~'
+  local -r alpha_set='A-Za-z0-9'
+
+  local -r special_pass="$(LC_ALL=C tr -dc "${special_set}" &lt; /dev/urandom |
+    head --bytes "${pass_length}")"
+
+  local -r alpha_pass="$(LC_ALL=C tr -dc "${alpha_set}" &lt; /dev/urandom |
+    head --bytes "${pass_length}")"
+
+  printf '{
+    "uid": "%s",
+    "title": "%s Characters",
+    "subtitle": "%s",
+    "arg": "%s",
+    "mods": { "cmd": { "subtitle": "%s", "arg": "%s" } }
+  }' \
+  "${pass_length}" "${pass_length}"   \
+  "${special_pass}" "${special_pass}" \
+  "${alpha_pass}" "${alpha_pass}"
+}
+
+printf '{ "items": [ %s, %s, %s, %s ] }' \
+  "$(make_item 128)" \
+  "$(make_item 64)"  \
+  "$(make_item 32)"  \
+  "$(make_item 16)"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>skipuniversalaction</key>
+				<true/>
+				<key>subtext</key>
+				<string>Generates random passwords with or without special characters</string>
+				<key>title</key>
+				<string>Random Characters Password</string>
+				<key>type</key>
+				<integer>11</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>FBCEB3A5-83C2-431B-84FD-DDC9BDE5CB57</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>function run(argv) {
+  ObjC.import("AppKit")
+
+  const pboard = $.NSPasteboard.generalPasteboard
+
+  pboard.clearContents
+  pboard.setStringForType(argv[0], "org.nspasteboard.ConcealedType")
+  pboard.setStringForType(argv[0], "public.utf8-plain-text")
+}</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>7</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>05A087A9-927C-4EE7-B6E6-BDD10903ACB4</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:conceal_clipboard}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>5</integer>
+						<key>matchstring</key>
+						<string></string>
+						<key>outputlabel</key>
+						<string>Conceal</string>
+						<key>uid</key>
+						<string>C403687E-4B6E-492D-9C6E-A8A05E5A4DE9</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>Reveal</string>
+				<key>hideelse</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>E6F0B2B7-89AE-4F9B-9067-32C69F383F34</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>E321D95F-AB1D-45F5-AFA2-DFAF5B63A754</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:word_keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Generating passwords…</string>
+				<key>script</key>
+				<string>function make_item {
+  local -r word_count="${1}"
+
+  local -r pass="$(grep --extended-regexp '^.{4,12}$' &lt; '/usr/share/dict/words' |
+    sort --random-sort           |
+    head --lines "${word_count}" |
+    tr '\n' '-'                  |
+    sed 's/-$//')"
+
+  printf '{
+    "uid": "%s",
+    "title": "%s Words",
+    "subtitle": "%s",
+    "arg": "%s"
+  }' \
+  "${word_count}" "${word_count}" \
+  "${pass}" "${pass}"
+}
+
+printf '{ "items": [ %s, %s, %s, %s ] }' \
+  "$(make_item 10)" \
+  "$(make_item 8)"  \
+  "$(make_item 6)"  \
+  "$(make_item 4)"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>skipuniversalaction</key>
+				<true/>
+				<key>subtext</key>
+				<string>Generates passwords of pronounceable words</string>
+				<key>title</key>
+				<string>Word-based Password</string>
+				<key>type</key>
+				<integer>11</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>C6606FF9-AF38-46DB-B38D-1EB88FBCC2A3</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>## Usage
+
+Generate a set of random character passwords via the `pass random` keyword.
+
+![Generated random passwords](images/about/random.png)
+
+* &lt;kbd&gt;↩&lt;/kbd&gt; Copy password with special characters.
+* &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; Copy password without special characters.
+
+Generate a set of word-based passwords via the `pass word` keyword.
+
+![Generated word-based passwords](images/about/word.png)
+
+* &lt;kbd&gt;↩&lt;/kbd&gt; Copy password.</string>
+	<key>uidata</key>
+	<dict>
+		<key>05A087A9-927C-4EE7-B6E6-BDD10903ACB4</key>
+		<dict>
+			<key>xpos</key>
+			<real>465</real>
+			<key>ypos</key>
+			<real>65</real>
+		</dict>
+		<key>C6606FF9-AF38-46DB-B38D-1EB88FBCC2A3</key>
+		<dict>
+			<key>xpos</key>
+			<real>80</real>
+			<key>ypos</key>
+			<real>195</real>
+		</dict>
+		<key>E321D95F-AB1D-45F5-AFA2-DFAF5B63A754</key>
+		<dict>
+			<key>xpos</key>
+			<real>465</real>
+			<key>ypos</key>
+			<real>195</real>
+		</dict>
+		<key>E6F0B2B7-89AE-4F9B-9067-32C69F383F34</key>
+		<dict>
+			<key>xpos</key>
+			<real>300</real>
+			<key>ypos</key>
+			<real>150</real>
+		</dict>
+		<key>FBCEB3A5-83C2-431B-84FD-DDC9BDE5CB57</key>
+		<dict>
+			<key>xpos</key>
+			<real>80</real>
+			<key>ypos</key>
+			<real>65</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>pass random</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Random Password Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>random_keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>pass word</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Word-based Password Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>word_keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string>Mark password as concealed</string>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Clipboard History</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>conceal_clipboard</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>25.1</string>
+	<key>webaddress</key>
+	<string>https://github.com/vitorgalvao/strong-password-workflow/</string>
+</dict>
+</plist>

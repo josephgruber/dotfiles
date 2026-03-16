@@ -8,11 +8,11 @@
                     "background": "#21c7a8",
                     "foreground": "#011627",
                     "leading_diamond": "\u256d\u2500\ue0b6",
-                    "properties": {
+                    "options": {
                         "windows": "\ue62a"
                     },
                     "style": "diamond",
-                    "template": " {{.Icon}}  ",
+                    "template": " {{.Icon}} ",
                     "type": "os"
                 },
                 {
@@ -21,13 +21,14 @@
                     "powerline_symbol": "\ue0b0",
                     "style": "powerline",
                     "template": " \uf292 ",
-                    "type": "root"
+                    "type": "root",
+                    "min_width": 170
                 },
                 {
                     "background": "#82AAFF",
                     "foreground": "#011627",
                     "powerline_symbol": "\ue0b0",
-                    "properties": {
+                    "options": {
                         "folder_icon": "\uf07c ",
                         "folder_separator_icon": "<#011627>\ue0b1</> ",
                         "home_icon": " \ueb06 ",
@@ -35,7 +36,23 @@
                     },
                     "style": "powerline",
                     "template": "{{ path .Path .Location }} ",
-                    "type": "path"
+                    "type": "path",
+                    "min_width": 160
+                },
+                {
+                    "background": "#82AAFF",
+                    "foreground": "#011627",
+                    "powerline_symbol": "\ue0b0",
+                    "options": {
+                        "folder_icon": "\uf07c ",
+                        "folder_separator_icon": "<#011627>\ue0b1</> ",
+                        "home_icon": " \ueb06 ",
+                        "style": "folder"
+                    },
+                    "style": "powerline",
+                    "template": "{{ path .Path .Location }} ",
+                    "type": "path",
+                    "max_width": 159
                 },
                 {
                     "background": "#addb67",
@@ -47,11 +64,10 @@
                     ],
                     "foreground": "#011627",
                     "powerline_symbol": "\ue0b0",
-                    "properties": {
+                    "options": {
                         "branch_icon": "\ue725 ",
                         "fetch_status": true,
                         "fetch_upstream_icon": true,
-                        "fetch_worktree_count": true,
                         "mapped_branches": {
                             "feat/*": "🚀 ",
                             "bug/*": "🐛 "
@@ -64,7 +80,7 @@
                 {
                     "background": "#575656",
                     "foreground": "#d6deeb",
-                    "properties": {
+                    "options": {
                         "style": "roundrock",
                         "threshold": 0
                     },
@@ -86,39 +102,43 @@
                     "leading_diamond": "\ue0b2",
                     "style": "diamond",
                     "template": "\ue7ad {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }}",
-                    "type": "aws"
+                    "type": "aws",
+                    "min_width": 150
                 },
                 {
                     "background": "#316ce4",
                     "foreground": "#ffffff",
                     "leading_diamond": "\ue0b2",
-                    "properties": {
+                    "options": {
                         "parse_kubeconfig": true
                     },
                     "style": "diamond",
                     "template": "\ue81d {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}}",
-                    "type": "kubectl"
+                    "type": "kubectl",
+                    "min_width": 160
                 },
                 {
                     "background": "#303030",
                     "foreground": "#3C873A",
                     "leading_diamond": "\ue0b2",
-                    "properties": {
+                    "options": {
                         "fetch_package_manager": true,
                         "npm_icon": "<#cc3a3a>\ue71e</> ",
                         "yarn_icon": "<#348cba>\ue6a7</> "
                     },
                     "style": "diamond",
                     "template": "\ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }}",
-                    "type": "node"
+                    "type": "node",
+                    "min_width": 150
                 },
                 {
                     "background": "#306998",
                     "foreground": "#FFE873",
                     "leading_diamond": "\ue0b2",
                     "style": "diamond",
-                    "template": "\ue235  {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}",
-                    "type": "python"
+                    "template": "\ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}",
+                    "type": "python",
+                    "min_width": 150
                 },
                 {
                     "background": "#ffffff",
@@ -126,13 +146,14 @@
                     "leading_diamond": "\ue0b2",
                     "style": "diamond",
                     "template": "\ue7a8 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-                    "type": "rust"
+                    "type": "rust",
+                    "min_width": 150
                 },
                 {
                     "background": "#234d70",
                     "foreground": "#d6deeb",
                     "leading_diamond": "\ue0b2",
-                    "properties": {
+                    "options": {
                         "time_format": "15:04:05"
                     },
                     "style": "diamond",
@@ -162,25 +183,11 @@
                     "type": "text"
                 },
                 {
-                    "background": "#1DB954",
-                    "foreground": "#011627",
-                    "leading_diamond": "\ue0b6",
-                    "style": "diamond",
-                    "properties": {
-                        "playing_icon": "\uf04b ",
-                        "paused_icon": "",
-                        "stopped_icon": ""
-                    },
-                    "template": " {{ .Icon }}{{ if and (ne .Status \"stopped\") (ne .Status \"paused\") }}{{ .Artist }} - {{ .Track }}{{ end }} ",
-                    "trailing_diamond": "\ue0c6 ",
-                    "type": "spotify"
-                },
-                {
                     "foreground": "#22da6e",
                     "foreground_templates": [
                         "{{ if gt .Code 0 }}#ef5350{{ end }}"
                     ],
-                    "properties": {
+                    "options": {
                         "always_enabled": true
                     },
                     "style": "plain",
