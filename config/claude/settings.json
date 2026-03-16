@@ -3,14 +3,10 @@
     "awsAuthRefresh": "aws sso login --profile bedrock",
     "cleanupPeriodDays": 90,
     "env": {
-        "ANTHROPIC_MODEL": "arn:aws-us-gov:bedrock:us-gov-west-1:125005550194:inference-profile/us-gov.anthropic.claude-sonnet-4-5-20250929-v1:0",
-        "AWS_PROFILE": "bedrock",
-        "AWS_REGION": "us-gov-west-1",
         "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90",
         "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
         "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
         "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-        "CLAUDE_CODE_USE_BEDROCK": "1",
         "DISABLE_ERROR_REPORTING": "1",
         "DISABLE_TELEMETRY": "1"
     },
