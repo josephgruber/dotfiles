@@ -12,7 +12,7 @@ autoload -U bashcompinit
 bashcompinit
 autoload -U compinit
 # Only check compinit cache once per day
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(Nmh+24) ]]; then
   compinit
 else
   compinit -C
