@@ -1,0 +1,99 @@
+{
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "awsAuthRefresh": "aws sso login --profile bedrock",
+    "cleanupPeriodDays": 90,
+    "env": {
+        "ANTHROPIC_MODEL": "arn:aws-us-gov:bedrock:us-gov-west-1:125005550194:inference-profile/us-gov.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "AWS_PROFILE": "bedrock",
+        "AWS_REGION": "us-gov-west-1",
+        "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90",
+        "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
+        "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+        "CLAUDE_CODE_USE_BEDROCK": "1",
+        "DISABLE_ERROR_REPORTING": "1",
+        "DISABLE_TELEMETRY": "1"
+    },
+    "enableAllProjectMcpServers": false,
+    "alwaysThinkingEnabled": true,
+    "permissions": {
+        "defaultMode": "default",
+        "allow": [
+            "Bash(command:pytest*)",
+            "Bash(command:git status*)",
+            "Bash(command:git diff*)",
+            "Bash(command:git log*)",
+            "Bash(command:ls*)",
+            "Bash(command:rg*)",
+            "Bash(find:*)",
+            "Bash(git diff:*)",
+            "Read(**/*.py)",
+            "Read(**/requirements*.txt)",
+            "Read(**/pyproject.toml)",
+            "mcp__server-filesystem__directory_tree"
+        ],
+        "ask": [],
+        "deny": [
+            "Bash(rm -fr *)",
+            "Bash(sudo *)",
+            "Bash(mkfs *)",
+            "Bash(dd *)",
+            "Bash(wget *|bash*)",
+            "Bash(wget *| bash*)",
+            "Bash(git add:*)",
+            "Bash(git commit:*)",
+            "Bash(git push*)",
+            "Bash(git push --force*)",
+            "Bash(git push *--force*)",
+            "Bash(git reset --hard*)",
+            "Bash(pip uninstall*)",
+            "Edit(~/.bashrc)",
+            "Edit(~/.zshrc)",
+            "Edit(~/.ssh/**)",
+            "Read(~/.ssh/**)",
+            "Read(~/.aws/**)",
+            "Read(~/.git-credentials)",
+            "Read(~/.docker/config.json)",
+            "Read(~/.kube/**)",
+            "Read(~/.npmrc)",
+            "Read(~/.npm/**)",
+            "Read(~/.pypirc)",
+            "Read(~/Library/Keychains/**)"
+        ]
+    },
+    "statusLine": {
+        "type": "command",
+        "command": "~/.claude/statusline.sh"
+    },
+    "autoMemoryEnabled": true,
+    "spinnerTipsEnabled": false,
+    "outputStyle": "default",
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Edit|Write",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "ruff check --fix {{files}} 2>/dev/null || true && ruff format {{files}} 2>/dev/null || true"
+                    },
+                    {
+                        "type": "command",
+                        "command": "mypy {{files}} --no-error-summary 2>/dev/null || true"
+                    }
+                ]
+            }
+        ],
+        "Notification": [
+            {
+                "matcher": ".*",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "osascript -e 'display notification \"Task completed\" with title \"Claude Code\"'"
+                    }
+                ]
+            }
+        ]
+    }
+}
