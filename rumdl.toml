@@ -1,5 +1,0 @@
-[global]
-respect_gitignore = true
-
-[MD013]
-line_length = 200
