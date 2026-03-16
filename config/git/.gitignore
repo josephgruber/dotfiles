@@ -507,10 +507,6 @@ terragrunt-debug.tfvars.json
 
 # End of https://www.toptal.com/developers/gitignore/api/git,node,ruby,linux,macos,jekyll,python,terragrunt,visualstudiocode,terraform,direnv
 
-# Amazon Q
-.amazonq/
-.amazonq/**/*
-
 # Custom Rules
 NOTES.md
 .claude/
