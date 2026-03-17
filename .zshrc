@@ -3,20 +3,20 @@ eval "$(brew shellenv)"
 # Allow directory stacks
 setopt AUTO_PUSHD       # Push the old directory onto a stack
 setopt PUSHD_MINUS      # Swap the directory stack ordering
+setopt MENU_COMPLETE    # Immediately enter completion menu on Tab
 
 # Setup autocompletion
+# Docker CLI completions
+if [ -d "$HOME/.docker" ] ; then
+    fpath=($HOME/.docker/completions $fpath)
+fi
 zstyle ':completion:*' completer _expand _complete _ignored _correct
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
-autoload -U bashcompinit
+zstyle ':completion:*' menu select=1
+source $HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+autoload -Uz bashcompinit
 bashcompinit
-autoload -U compinit
-# Only check compinit cache once per day
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(Nmh+24) ]]; then
-  compinit
-else
-  compinit -C
-fi
 
 # Set zsh history file length
 HISTFILE="$HOME/.zsh_history"
@@ -81,7 +81,6 @@ complete -C '/opt/homebrew/bin/aws_completer' aws
 complete -C '/opt/homebrew/bin/aws_completer' awslocal
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Custom functions
 chpwd() { ls -l --color=auto; }
@@ -89,6 +88,9 @@ chpwd() { ls -l --color=auto; }
 # Setup and configure pyenv (lazy-loaded to avoid lock issues)
 if [ -d "$HOME/.pyenv" ] ; then
     export PYENV_ROOT="$HOME/.pyenv"
+    export PIPENV_VENV_IN_PROJECT=1 # Create virtualenvs inside the project directory
+    export PIPENV_VERBOSITY=-1
+    export PIPENV_PYTHON=$PYENV_ROOT/shims/python
     export PATH="$PYENV_ROOT/bin:$PATH"
     # Lazy load pyenv
     pyenv() {
@@ -105,15 +107,17 @@ fi
 eval "$(direnv hook zsh)"
 export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
 
-# Cache brew prefix to avoid subprocess
-BREW_PREFIX="/opt/homebrew"
-source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+# Load zsh-autosuggestions
+source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # VSCode Integration
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
 
 # Initialize oh-my-posh with a custom theme
 eval "$(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")"
+
+# Initialize Ruff
+eval "$(ruff generate-shell-completion zsh)"
 
 # Local Overrides. Keep at the bottom of this file.
 [ -f "${DOTFILES}/.local/.zshrc" ] && source "${DOTFILES}/.local/.zshrc"
