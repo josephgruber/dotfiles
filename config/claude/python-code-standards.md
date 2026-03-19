@@ -71,7 +71,7 @@ name: Python Best Practices
 - Use fixtures for test setup and teardown
 - Mock external dependencies in tests
 - Aim for high test coverage of critical paths
-- Always use pytest-mock and it's MockerFixture for mocks, instead of unitest.mock
+- Always use pytest-mock and its MockerFixture for mocks, instead of unittest.mock
 
 ## Performance & Efficiency
 

@@ -1,6 +1,10 @@
 @~/.claude/swe-standards.md
 @~/.claude/python-code-standards.md
 
+### Skills
+
+When working with Python, invoke the relevant /astral:<skill> for uv, ty, and ruff to ensure best practices are followed.
+
 ### CLI tools
 
 | tool | replaces | usage |
