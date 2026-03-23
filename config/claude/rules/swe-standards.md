@@ -1,15 +1,27 @@
 ---
 name: Core Software Engineering Principles
 description: Essential engineering principles for all code
+paths:
+  - "**/*.py"
+  - "**/*.md"
+  - "**/*.js"
+  - "**/*.json"
+  - "**/*.vue"
 ---
 
-# Code Quality
+## Code Quality
 
 - Write self-documenting code with clear names
 - Keep functions small and single-purpose (SRP)
 - Follow DRY - extract duplicated logic
 - Avoid deep nesting - use early returns
 - Remove dead code and commented code
+
+## Core Principles
+
+- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+- **No Laziness**:: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
 
 ## Security & Safety
 
@@ -26,7 +38,6 @@ description: Essential engineering principles for all code
 
 ## Version Control
 
-- Write clear, descriptive commit messages
 - Keep commits atomic and focused
 - Never commit sensitive data
 

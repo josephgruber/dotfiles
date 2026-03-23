@@ -446,5 +446,8 @@ terragrunt-debug.tfvars.json
 NOTES.md
 .continue/
 .continue/*
+.claude/
 .claude/*
+CLAUDE.md
 .rumdl_cache/*
+**/.mcp.json

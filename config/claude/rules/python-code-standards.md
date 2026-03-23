@@ -1,5 +1,7 @@
 ---
 name: Python Best Practices
+paths:
+  - "**/*.py"
 ---
 
 # Type Hints & Type Safety
@@ -13,7 +15,7 @@ name: Python Best Practices
 ## Documentation
 
 - Write docstrings in Google format for all modules, classes, and functions
-- Include Args, Returns, Raises, and Examples sections in docstrings where applicable
+- Include Args (format: `name (type): Description`), Returns, Raises, and Examples sections where applicable
 - Keep docstrings concise but complete - explain the "why" not just the "what"
 - Document complex algorithms with inline comments
 
@@ -62,16 +64,6 @@ name: Python Best Practices
 - Use enumerate() instead of range(len()) for iteration with indices
 - Use zip() for parallel iteration over multiple sequences
 - Prefer "is None" over "== None" for None checks
-
-## Testing
-
-- Write unit tests using pytest framework
-- Use descriptive test function names that explain what is being tested
-- Follow Arrange-Act-Assert pattern in tests
-- Use fixtures for test setup and teardown
-- Mock external dependencies in tests
-- Aim for high test coverage of critical paths
-- Always use pytest-mock and its MockerFixture for mocks, instead of unittest.mock
 
 ## Performance & Efficiency
 

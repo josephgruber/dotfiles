@@ -13,7 +13,11 @@ stdin_data=$(cat)
 IFS=$'\t' read -r current_dir cost duration_ms ctx_used cache_pct < <(
     echo "$stdin_data" | jq -r '[
         .workspace.current_dir // "unknown",
-        (try (.cost.total_cost_usd // 0 | . * 100 | floor / 100) catch 0),
+        (try (.cost.total_cost_usd // 0 | . * 100 + 0.5 | floor / 100 | tostring |
+            if test("\\.") then
+                if test("\\.[0-9]$") then . + "0" else . end
+            else . + ".00" end
+        ) catch "0.00"),
         (.cost.total_duration_ms // 0),
         (try (
             if (.context_window.remaining_percentage // null) != null then
