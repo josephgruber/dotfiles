@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Use when you need to lint and validate shell scripts in the dotfiles repo, or before committing shell changes
+description: Use when the user wants to check, lint, verify, or validate shell scripts or dotfiles shell configs. Trigger on mentions of shellcheck, shfmt, formatting issues in shell files, or pre-commit checks on .sh/.zsh/.zshrc/.profile files. Do not trigger for code explanations, config edits, git commits, or non-shell file work.
 ---
 
 You MUST use the Bash tool to run shellcheck and shfmt — manual code review is not a substitute. If Bash is denied, stop and tell the user you need Bash permission to run the linting tools.

@@ -92,6 +92,11 @@
             "command": "mypy {{files}} --no-error-summary 2>/dev/null || true"
           },
           {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.md ]]; then rumdl fmt \"$f\" 2>/dev/null || true; fi; }",
+            "statusMessage": "Formatting Markdown..."
+          },
+          {
             "type": "agent",
             "prompt": "Extract the file path from $ARGUMENTS and run mcp__ide__getDiagnostics on it to check for errors"
           }

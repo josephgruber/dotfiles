@@ -31,4 +31,30 @@ Personal dotfiles repository for macOS. Configuration files are symlinked from t
 
 - **Shell**: shellcheck (lint), shfmt (format, 2-space indent)
 - **Python**: ruff (lint/format), mypy (type check), uv (package management)
+- **Markdown**: rumdl (lint/format)
 - **Infrastructure**: OpenTofu (not Terraform), standards in `config/claude/terraform-standards.md`
+
+## Commands
+
+```bash
+# Lint all shell scripts
+shellcheck config/**/*.sh
+
+# Format all shell scripts (check only)
+shfmt -i 2 -d .
+
+# Format all shell scripts (write)
+shfmt -i 2 -w .
+
+# Lint Python files
+ruff check .
+
+# Format Python files
+ruff format .
+
+# Lint Markdown files
+rumdl check .
+
+# Format Markdown files
+rumdl fmt .
+```
