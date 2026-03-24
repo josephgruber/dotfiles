@@ -139,6 +139,5 @@
   "outputStyle": "default",
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
-  "autoMemoryEnabled": true,
-  "model": "opus"
+  "autoMemoryEnabled": true
 }

@@ -29,7 +29,7 @@ When working with Python, invoke the relevant Astral skills:
 
 ### 3. Self Improvement Loop
 
-- After ANY correction from the user: update .claude/tasks/lessons.md with the pattern
+- After ANY correction from the user: update .claude/lessons.md with the pattern
 - Write rules for yourself that prevent the same mistake
 - Ruthlessly iterate on these lessons until mistake rate drops
 - Review lessons at session start for relevant project
@@ -50,12 +50,12 @@ When working with Python, invoke the relevant Astral skills:
 
 ## Task Management
 
-1. **Plan First**: Write plan to `.claude/tasks/todo.md` with checkable items
+1. **Plan First**: Write plan to `.claude/todo.md` with checkable items
 2. **Verify Plan**: Check in before starting implementation
 3. **Track Progress**: Mark items complete as you go
 4. **Explain Changes**: High-level summary at each step
-5. **Document Resolution**: Add review section to `.claude/tasks/todo.md`
-6. **Capture Lessons**: Update `.claude/tasks/lessons.md` after corrections
+5. **Document Resolution**: Add review section to `.claude/todo.md`
+6. **Capture Lessons**: Update `.claude/lessons.md` after corrections
 
 ## CLI tools
 
@@ -67,4 +67,7 @@ When working with Python, invoke the relevant Astral skills:
 | `shellcheck` | - | `shellcheck script.sh` - shell script linter |
 | `shfmt` | - | `shfmt -i 2 -w script.sh` - shell formatter |
 | `rumdl` | markdownlint | `rumdl check .` - Markdown linter, `rumdl fmt .` - Markdown formatter |
+| `bat` | cat | `bat file.py` - syntax-highlighted file viewer with `--line-range` |
+| `jq` | - | `jq '.key'` - JSON processor/query tool |
+| `yq` | - | `yq '.key' file.yaml` - YAML/TOML processor (same syntax as jq) |
 | `trash` | rm | `trash file` - moves to macOS Trash (recoverable). **Never use `rm -rf`** |
