@@ -139,5 +139,6 @@
   "outputStyle": "default",
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
-  "autoMemoryEnabled": true
+  "autoMemoryEnabled": true,
+  "autoDreamEnabled": true
 }
