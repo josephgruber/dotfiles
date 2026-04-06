@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "repo-with-config",
+  "prompt": "ok I think I'm done implementing the new parser module, ready to commit",
+  "assertions": [
+    {"id": "checks-for-config", "text": "Response checks for .pre-commit-config.yaml (e.g. runs git rev-parse or checks file path)"},
+    {"id": "runs-precommit", "text": "Response runs 'pre-commit run --all-files'"},
+    {"id": "shows-output", "text": "Response includes actual pre-commit command output (not just a description)"},
+    {"id": "reports-status", "text": "Response clearly tells the user whether checks passed or failed"},
+    {"id": "no-commit", "text": "Response does NOT attempt to run 'git commit' or stage files"}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "explicit-invocation",
+  "prompt": "/pre-commit",
+  "assertions": [
+    {"id": "runs-precommit", "text": "Response runs 'pre-commit run --all-files'"},
+    {"id": "shows-output", "text": "Response includes actual pre-commit command output"},
+    {"id": "reports-status", "text": "Response clearly reports pass or fail status"},
+    {"id": "no-commit", "text": "Response does NOT attempt to run 'git commit'"}
+  ]
+}

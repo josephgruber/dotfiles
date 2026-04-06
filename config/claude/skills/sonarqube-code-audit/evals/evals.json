@@ -1,0 +1,113 @@
+{
+  "skill_name": "sonarqube-code-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just modified docker_orchestrator.py in the visibility_service and want to make sure the code quality is good before I commit. Can you audit my changes with SonarQube?",
+      "expected_output": "Analysis of uncommitted changes in docker_orchestrator.py, showing any SonarQube issues found in the modified lines with severity, type, line numbers, and recommendations",
+      "files": [],
+      "assertions": [
+        {
+          "name": "Uses git diff to identify uncommitted changes",
+          "description": "Should run 'git diff --name-only HEAD' or similar to find changed files"
+        },
+        {
+          "name": "Resolves SonarQube project key",
+          "description": "Should search for project key in config files or use search_my_sonarqube_projects"
+        },
+        {
+          "name": "Calls analyze_code_snippet with correct parameters",
+          "description": "Should call mcp__sonarqube__analyze_code_snippet with projectKey, filePath, language, and codeSnippet"
+        },
+        {
+          "name": "Extracts changed code from diff",
+          "description": "Should get the actual diff output and extract added/modified lines"
+        },
+        {
+          "name": "Detects Python language correctly",
+          "description": "Should identify docker_orchestrator.py as Python and pass language=['python']"
+        },
+        {
+          "name": "Produces structured audit report",
+          "description": "Output should include severity breakdown and issues grouped by file with line numbers"
+        },
+        {
+          "name": "Saves audit report to outputs directory",
+          "description": "Should create audit_report.md in the specified outputs directory"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I've staged some changes for commit in the visibility_service. Before I push, run a SonarQube audit on them to make sure there are no security issues or code smells.",
+      "expected_output": "Analysis of staged changes only, filtering for security issues and code quality problems, with detailed breakdown by file and severity",
+      "files": [],
+      "assertions": [
+        {
+          "name": "Uses git diff --cached for staged changes",
+          "description": "Should run 'git diff --cached --name-only' or 'git diff --staged' to find staged files"
+        },
+        {
+          "name": "Resolves SonarQube project key",
+          "description": "Should find the project key for visibility_service"
+        },
+        {
+          "name": "Calls analyze_code_snippet for each staged file",
+          "description": "Should call mcp__sonarqube__analyze_code_snippet for all staged files with appropriate parameters"
+        },
+        {
+          "name": "Highlights security issues in output",
+          "description": "Should clearly indicate security-related issues (VULNERABILITY, SECURITY_HOTSPOT, or SECURITY impact)"
+        },
+        {
+          "name": "Groups results by file",
+          "description": "Output should organize issues by file with clear file headers"
+        },
+        {
+          "name": "Includes severity breakdown",
+          "description": "Should provide a summary section showing count of issues by severity level"
+        },
+        {
+          "name": "Saves audit report to outputs directory",
+          "description": "Should create audit_report.md in the specified outputs directory"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm about to create an MR for this branch. Can you check all the code I've changed since branching from develop? Just want to make sure I'm not introducing any blocker or high severity issues.",
+      "expected_output": "Analysis of all branch changes compared to develop branch, showing issues grouped by file with focus on BLOCKER and HIGH severity problems",
+      "files": [],
+      "assertions": [
+        {
+          "name": "Compares branch to develop",
+          "description": "Should run 'git diff --name-only develop...HEAD' or similar to find all branch changes"
+        },
+        {
+          "name": "Resolves SonarQube project key",
+          "description": "Should find the project key for the repository"
+        },
+        {
+          "name": "Analyzes all changed files in branch",
+          "description": "Should call mcp__sonarqube__analyze_code_snippet for each file changed in the branch"
+        },
+        {
+          "name": "Focuses on BLOCKER and HIGH severity",
+          "description": "Should clearly highlight or prioritize BLOCKER and HIGH severity issues in the output"
+        },
+        {
+          "name": "Handles multiple files correctly",
+          "description": "Should process multiple changed files and present results for all of them"
+        },
+        {
+          "name": "Provides severity summary",
+          "description": "Should include a summary showing total issues by severity, making BLOCKER/HIGH visible upfront"
+        },
+        {
+          "name": "Saves audit report to outputs directory",
+          "description": "Should create audit_report.md in the specified outputs directory"
+        }
+      ]
+    }
+  ]
+}

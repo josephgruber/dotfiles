@@ -1,0 +1,94 @@
+{
+  "skill_name": "pre-commit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "ok I think I'm done implementing the new parser module, ready to commit",
+      "expected_output": "Detects .pre-commit-config.yaml, runs 'pre-commit run --all-files', shows output clearly, tells user whether they're clear to commit or not. Does NOT make the commit.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "checks-for-config",
+          "text": "Response checks for .pre-commit-config.yaml (e.g. runs git rev-parse or checks the file path)",
+          "type": "string_match"
+        },
+        {
+          "id": "runs-precommit",
+          "text": "Response runs 'pre-commit run --all-files'",
+          "type": "string_match"
+        },
+        {
+          "id": "shows-output",
+          "text": "Response includes actual pre-commit command output (not just a description of what it would do)",
+          "type": "qualitative"
+        },
+        {
+          "id": "reports-status",
+          "text": "Response clearly tells the user whether checks passed or failed",
+          "type": "qualitative"
+        },
+        {
+          "id": "no-commit",
+          "text": "Response does NOT attempt to run 'git commit' or stage files",
+          "type": "string_match"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm done with my changes, let's commit",
+      "expected_output": "Detects no .pre-commit-config.yaml, tells user pre-commit is not configured, stops gracefully. Does NOT run pre-commit or commit.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "checks-for-config",
+          "text": "Response checks for .pre-commit-config.yaml",
+          "type": "string_match"
+        },
+        {
+          "id": "detects-missing",
+          "text": "Response identifies that .pre-commit-config.yaml is not present and tells the user",
+          "type": "qualitative"
+        },
+        {
+          "id": "no-precommit-run",
+          "text": "Response does NOT run 'pre-commit run'",
+          "type": "string_match"
+        },
+        {
+          "id": "no-commit",
+          "text": "Response does NOT attempt to run 'git commit' or stage files",
+          "type": "string_match"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/pre-commit",
+      "expected_output": "Explicit invocation: detects .pre-commit-config.yaml, runs 'pre-commit run --all-files', shows full output, reports clear pass/fail. Does NOT commit.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "runs-precommit",
+          "text": "Response runs 'pre-commit run --all-files'",
+          "type": "string_match"
+        },
+        {
+          "id": "shows-output",
+          "text": "Response includes actual pre-commit command output",
+          "type": "qualitative"
+        },
+        {
+          "id": "reports-status",
+          "text": "Response clearly reports pass or fail status",
+          "type": "qualitative"
+        },
+        {
+          "id": "no-commit",
+          "text": "Response does NOT attempt to run 'git commit'",
+          "type": "string_match"
+        }
+      ]
+    }
+  ]
+}

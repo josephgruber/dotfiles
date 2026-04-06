@@ -1,0 +1,23 @@
+USER: /pre-commit
+
+CLAUDE (with pre-commit skill):
+
+Running pre-commit checks.
+
+```
+$ git rev-parse --show-toplevel
+/private/tmp/pre-commit-eval3
+```
+
+Found `.pre-commit-config.yaml` — running hooks:
+
+```
+$ pre-commit run --all-files
+no trailing whitespace..................................................Failed
+- hook id: no-trailing-whitespace
+- exit code: 1
+
+main.py:3: x = 1
+```
+
+Hooks failed. The `no trailing whitespace` check found trailing spaces on line 3 of `main.py`. Fix the whitespace and re-run before committing.

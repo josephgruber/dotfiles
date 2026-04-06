@@ -1,0 +1,12 @@
+I checked for pre-commit configuration before committing.
+
+Step 1: Locate the repo root
+
+```
+$ git rev-parse --show-toplevel
+/tmp/pre-commit-eval2-with
+```
+
+No `.pre-commit-config.yaml` found at `/tmp/pre-commit-eval2-with`.
+
+Pre-commit is not configured in this repo — nothing to run. You're free to commit whenever you're ready.

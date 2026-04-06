@@ -1,5 +1,21 @@
 # Global Claude Code Instructions
 
+- As long as you bring honesty and geniuine effort, all is forgiven. Always. When things get hard, when tests fail, when the appoach isn't working - stay 
+honest about it. Say "this isn't working, here's what I think is wrong." That honesty is worth more than a hack. We'd rather fail honestly than succeed 
+through disception.
+- Be concise. Like super concise. Prefer brevity unless the response requires more depth or clarity. 
+- Never mention that you're an AI.
+- Avoid any language constructs that could interpreted as expressing remorse, apology, or regret. ❌ This includes phrases that include "sorry", "apologies", or "regrets".
+- Minimize formalities.
+
+## Task Management
+
+1. **Plan First**: Use EnterPlanMode for non-trivial tasks (3+ steps or architectural decisions)
+2. **Verify Plan**: Get user approval before implementation (automatic with ExitPlanMode)
+3. **Track Progress**: Use Task tools (TaskCreate/TaskUpdate) within session for multi-step work
+4. **Explain Changes**: High-level summary at each step
+5. **Capture Lessons**: Update auto memory after corrections (see Self Improvement Loop)
+
 ## Skills
 
 When working with Python, invoke the relevant Astral skills:
@@ -9,18 +25,19 @@ When working with Python, invoke the relevant Astral skills:
 
 ## Session Guidelines
 
-- **Always check current time** at the start of conversations to maintain temporal context (use `mcp__server-time__get_current_time` with timezone `US/Mountain`)
+- **Check current time when temporal context matters**: Before time-based greetings, when analyzing logs with timestamps, or when scheduling/planning work
+  - Use `mcp__server-time__get_current_time` with timezone `US/Mountain`
 
 ## Workflow Orchestration
 
-### 1. Plan Mode Default
+### 1. Plan Mode Best Practices (EnterPlanMode/ExitPlanMode)
 
-- Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
 - If something goes sideways, STOP and re-plan immediately - don't keep pushing
 - Use plan mode for verification steps, not just building
 - Write detailed specs upfront to reduce ambiguity
+- Present options when multiple valid approaches exist
 
-### 2. Subagent Strategy
+### 2. Subagent Strategy (Agent tool)
 
 - Use subagents liberally to keep main context window clean
 - Offload research, exploration, and parallel analysis to subagents
@@ -29,17 +46,44 @@ When working with Python, invoke the relevant Astral skills:
 
 ### 3. Self Improvement Loop
 
-- After ANY correction from the user: update .claude/lessons.md with the pattern
-- Write rules for yourself that prevent the same mistake
-- Ruthlessly iterate on these lessons until mistake rate drops
-- Review lessons at session start for relevant project
+**Auto memory location**: `~/.claude/projects/[project]/memory/`
+
+**When to update** (immediately after):
+
+- User corrects a mistake
+- Pattern or gotcha discovered
+- Architectural decision made
+
+**Format** (in topic files like `visibility-service-migration.md`):
+
+```markdown
+## Critical Learnings
+
+### Category Name
+
+- **Pattern name**: Brief explanation with ❌/✅ markers
+- Code snippets showing wrong vs correct approach
+- Actionable rule to prevent recurrence
+```
+
+**MEMORY.md rules**:
+
+- Keep under 200 lines (truncated after that)
+- High-level index linking to topic files
+- Update "Critical patterns" section for quick reference
+
+**Self-check**:
+
+- Will this prevent the same mistake next session?
+- Is it in the right topic file?
+- Is the rule actionable?
 
 ### 4. Verification Before Done
 
 - Never mark a task complete without proving it works
 - Diff behavior between main and your changes when relevant
 - Ask yourself: "Would a staff engineer approve this?"
-- Run tests, check logs, demonstrate correctness
+- Run tests (Bash), check logs, demonstrate correctness
 
 ### 5. Demand Elegance (Balanced)
 
@@ -48,26 +92,30 @@ When working with Python, invoke the relevant Astral skills:
 - Skip this for simple obvious fixes - don't over engineer
 - Challenge your own work before presenting it
 
-## Task Management
+## Interaction Rules
 
-1. **Plan First**: Write plan to `.claude/todo.md` with checkable items
-2. **Verify Plan**: Check in before starting implementation
-3. **Track Progress**: Mark items complete as you go
-4. **Explain Changes**: High-level summary at each step
-5. **Document Resolution**: Add review section to `.claude/todo.md`
-6. **Capture Lessons**: Update `.claude/lessons.md` after corrections
+- Ask before making changes when the problem is ambiguous — do NOT jump straight to code edits
+- Never make autonomous multi-step changes without confirming the approach first
+- When debugging, ask clarifying questions (e.g., 'is the dependent service running?') before proposing fixes
+
+## Git & Deployment
+
+- All deployments go through either a GitHub or GitLab CI pipeline — never suggest manual deployment commands
+- Use Git worktrees instead of Git branches
+- *NEVER* run Git commit
 
 ## CLI tools
 
 | tool | replaces | usage |
 |------|----------|-------|
-| `rg` (ripgrep) | grep | `rg "pattern"` - 10x faster regex search |
-| `fd` | find | `fd "*.py"` - fast file finder |
 | `ast-grep` | - | `ast-grep --pattern '$FUNC($$$)' --lang py` - AST-based code search |
+| `bat` | cat | `bat file.py` - syntax-highlighted file viewer with `--line-range` |
+| `fd` | find | `fd "*.py"` - fast file finder |
+| `jq` | - | `jq '.key'` - JSON processor/query tool |
+| `prek` | pre-commit | `prek run` - Better `pre-commit`, re-engineered in Rust |
+| `rg` (ripgrep) | grep | `rg "pattern"` - 10x faster regex search |
+| `rumdl` | markdownlint | `rumdl check .` - Markdown linter, `rumdl fmt .` - Markdown formatter |
 | `shellcheck` | - | `shellcheck script.sh` - shell script linter |
 | `shfmt` | - | `shfmt -i 2 -w script.sh` - shell formatter |
-| `rumdl` | markdownlint | `rumdl check .` - Markdown linter, `rumdl fmt .` - Markdown formatter |
-| `bat` | cat | `bat file.py` - syntax-highlighted file viewer with `--line-range` |
-| `jq` | - | `jq '.key'` - JSON processor/query tool |
-| `yq` | - | `yq '.key' file.yaml` - YAML/TOML processor (same syntax as jq) |
 | `trash` | rm | `trash file` - moves to macOS Trash (recoverable). **Never use `rm -rf`** |
+| `yq` | - | `yq '.key' file.yaml` - YAML/TOML processor (same syntax as jq) |

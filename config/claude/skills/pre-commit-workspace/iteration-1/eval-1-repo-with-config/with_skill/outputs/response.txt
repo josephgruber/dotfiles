@@ -1,0 +1,19 @@
+USER: ok I think I'm done implementing the new parser module, ready to commit
+
+CLAUDE (with pre-commit skill):
+
+Let me run the pre-commit checks before you commit.
+
+```
+$ git rev-parse --show-toplevel
+/private/tmp/pre-commit-eval1
+```
+
+Found `.pre-commit-config.yaml` — running hooks now:
+
+```
+$ pre-commit run --all-files
+echo ok...............................................................Passed
+```
+
+All checks passed. You're clear to commit.

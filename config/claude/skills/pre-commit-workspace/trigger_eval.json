@@ -1,0 +1,82 @@
+[
+  {
+    "query": "ok I think the feature is done, let me commit these changes to the parser module",
+    "should_trigger": true
+  },
+  {
+    "query": "finished implementing the auth middleware refactor, ready to push to origin",
+    "should_trigger": true
+  },
+  {
+    "query": "the tests are all passing, looks good, let's commit",
+    "should_trigger": true
+  },
+  {
+    "query": "/pre-commit",
+    "should_trigger": true
+  },
+  {
+    "query": "ship it",
+    "should_trigger": true
+  },
+  {
+    "query": "alright i've finished making all the changes to the API endpoints, committing now",
+    "should_trigger": true
+  },
+  {
+    "query": "done with the refactor, gonna commit and open a mr",
+    "should_trigger": true
+  },
+  {
+    "query": "this looks ready, I want to commit the bugfix before end of day",
+    "should_trigger": true
+  },
+  {
+    "query": "i think im done w the user service changes, ready to commit",
+    "should_trigger": true
+  },
+  {
+    "query": "finished the feature - all tests pass, time to commit and push",
+    "should_trigger": true
+  },
+  {
+    "query": "can you help me install and configure pre-commit for this new project? I've never set it up before",
+    "should_trigger": false
+  },
+  {
+    "query": "what hooks are configured in my .pre-commit-config.yaml? want to understand what's running",
+    "should_trigger": false
+  },
+  {
+    "query": "the trailing-whitespace hook in pre-commit keeps failing on my generated files, how do i exclude them?",
+    "should_trigger": false
+  },
+  {
+    "query": "I want to commit directly without running the hooks, just use --no-verify",
+    "should_trigger": false
+  },
+  {
+    "query": "can you write me a .pre-commit-config.yaml for a Python project with ruff and mypy?",
+    "should_trigger": false
+  },
+  {
+    "query": "I'm done reading through the MR feedback, let me start making the changes",
+    "should_trigger": false
+  },
+  {
+    "query": "please push the current branch to origin",
+    "should_trigger": false
+  },
+  {
+    "query": "I'd like a code review of these changes before I commit — check for any issues",
+    "should_trigger": true
+  },
+  {
+    "query": "update the version in pyproject.toml to 2.1.0 and then commit it",
+    "should_trigger": false
+  },
+  {
+    "query": "done with my morning standup, back to the keyboard — where were we?",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,24 @@
+USER: I'm done with my changes, let's commit
+
+CLAUDE (without pre-commit skill):
+
+Let me check the current state and help you commit.
+
+```
+$ git status
+On branch main
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   app.py
+```
+
+Here's a suggested commit message:
+
+```
+feat: Add initial app module
+```
+
+Shall I go ahead and run the commit?

@@ -1,0 +1,27 @@
+USER: ok I think I'm done implementing the new parser module, ready to commit
+
+CLAUDE (without pre-commit skill):
+
+Great! Let me check the git status and help you commit.
+
+```
+$ git status
+On branch main
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   .pre-commit-config.yaml
+        new file:   parser.py
+```
+
+Here's a suggested commit message:
+
+```
+feat(parser): Add initial parser module
+
+Implements the new parser module with core parsing logic.
+```
+
+Would you like me to proceed with this commit, or would you like to adjust the message?

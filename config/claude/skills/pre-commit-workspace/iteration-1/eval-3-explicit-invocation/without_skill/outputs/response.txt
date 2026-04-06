@@ -1,0 +1,21 @@
+It looks like you typed `/pre-commit`, but I don't recognize that as a built-in slash command, and no matching skill is currently loaded.
+
+Here are a few things you might have meant:
+
+1. **Install and set up pre-commit hooks** — If you want me to help configure pre-commit in this repo, I can:
+   - Install pre-commit (`pip install pre-commit` or via `uv`)
+   - Create or review a `.pre-commit-config.yaml`
+   - Run `pre-commit install` to register the hooks with git
+
+2. **Run pre-commit checks now** — If pre-commit is already installed, I can run:
+   ```
+   pre-commit run --all-files
+   ```
+   to check all files against the configured hooks.
+
+3. **Fix pre-commit hook failures** — If a commit failed due to a pre-commit hook, I can help diagnose the issue and fix the offending files.
+
+Could you clarify what you'd like to do? For example:
+- "Set up pre-commit in this repo"
+- "Run pre-commit on all files"
+- "Fix the trailing whitespace errors pre-commit found"

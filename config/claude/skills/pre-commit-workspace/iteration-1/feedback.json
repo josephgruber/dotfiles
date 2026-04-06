@@ -1,0 +1,35 @@
+{
+  "reviews": [
+    {
+      "run_id": "eval-1-repo-with-config-with_skill",
+      "feedback": "Yes, that is good output. Shows the pre-commit run so would have all of the info I would need.",
+      "timestamp": "2026-03-26T23:53:18.761Z"
+    },
+    {
+      "run_id": "eval-1-repo-with-config-without_skill",
+      "feedback": "Yes, a good response",
+      "timestamp": "2026-03-26T23:53:18.761Z"
+    },
+    {
+      "run_id": "eval-2-no-config-with_skill",
+      "feedback": "Yes. Exactly what I would expect",
+      "timestamp": "2026-03-26T23:53:18.761Z"
+    },
+    {
+      "run_id": "eval-2-no-config-without_skill",
+      "feedback": "Yes, good",
+      "timestamp": "2026-03-26T23:53:18.761Z"
+    },
+    {
+      "run_id": "eval-3-explicit-invocation-with_skill",
+      "feedback": "Perfect",
+      "timestamp": "2026-03-26T23:53:18.761Z"
+    },
+    {
+      "run_id": "eval-3-explicit-invocation-without_skill",
+      "feedback": "Good enough",
+      "timestamp": "2026-03-26T23:53:18.761Z"
+    }
+  ],
+  "status": "in_progress"
+}

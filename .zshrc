@@ -82,8 +82,10 @@ complete -C '/opt/homebrew/bin/aws_completer' awslocal
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 
-# Custom functions
-chpwd() { ls -l --color=auto; }
+# Custom functions\
+if [[ -z "$CLAUDECODE" ]]; then
+    chpwd() { ls -l --color=auto; }
+fi
 
 # Setup and configure pyenv (lazy-loaded to avoid lock issues)
 if [ -d "$HOME/.pyenv" ] ; then
@@ -103,9 +105,11 @@ fi
 # iTerm2 shell integration
 [[ "$TERM_PROGRAM" == "iTerm.app" ]] && zstyle :omz:plugins:iterm2 shell-integration yes
 
-# Setup and configure direnv
-eval "$(direnv hook zsh)"
-export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
+# Setup and configure direnv (exclude Claude Code terminals)
+if [[ -z "$CLAUDECODE" ]]; then
+    eval "$(direnv hook zsh)"
+    export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
+fi
 
 # Load zsh-autosuggestions
 source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"

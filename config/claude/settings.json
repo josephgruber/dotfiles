@@ -1,144 +1,198 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "cleanupPeriodDays": 90,
-  "env": {
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90",
-    "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
-    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-    "CLAUDE_CODE_NEW_INIT": "1",
-    "DISABLE_ERROR_REPORTING": "1",
-    "DISABLE_TELEMETRY": "1",
-    "ENABLE_TOOL_SEARCH": "true"
-  },
-  "includeCoAuthoredBy": false,
-  "permissions": {
-    "allow": [
-      "Bash(command:git diff*)",
-      "Bash(command:git log*)",
-      "Bash(command:git status*)",
-      "Bash(command:ls*)",
-      "Bash(pipenv run:*)",
-      "Bash(command:pytest*)",
-      "Bash(command:rg*)",
-      "Bash(find:*)",
-      "Bash(git diff:*)",
-      "Bash(git switch:*)",
-      "Bash(glab issue:*)",
-      "Bash(jq:*)",
-      "mcp__ide__getDiagnostics",
-      "mcp__server-filesystem__directory_tree",
-      "mcp__server-filesystem__list_directory",
-      "mcp__server-filesystem__read_text_file",
-      "mcp__server-git__git_diff",
-      "mcp__server-time__get_current_time",
-      "Read(**/*.md)",
-      "Read(**/*.py)",
-      "Read(**/pyproject.toml)",
-      "Read(**/requirements*.txt)",
-      "Skill(glab)",
-      "Write(**/*.md)",
-      "Write(**/*.py)"
-    ],
-    "deny": [
-      "Bash(rm -fr *)",
-      "Bash(sudo *)",
-      "Bash(mkfs *)",
-      "Bash(dd *)",
-      "Bash(wget *|bash*)",
-      "Bash(wget *| bash*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push*)",
-      "Bash(git push --force*)",
-      "Bash(git push *--force*)",
-      "Bash(git reset --hard*)",
-      "Bash(pip uninstall*)",
-      "Edit(~/.bashrc)",
-      "Edit(~/.zshrc)",
-      "Edit(~/.ssh/**)",
-      "Read(~/.ssh/**)",
-      "Read(~/.aws/**)",
-      "Read(~/.git-credentials)",
-      "Read(~/.docker/config.json)",
-      "Read(~/.kube/**)",
-      "Read(~/.npmrc)",
-      "Read(~/.npm/**)",
-      "Read(~/.pypirc)",
-      "Read(~/Library/Keychains/**)",
-      "mcp__server-git__git_add"
-    ],
-    "ask": [
-      "Bash(glab api:*)"
-    ],
-    "defaultMode": "default",
-    "additionalDirectories": [
-      "//Users/josephgruber/dev",
-      "~/.claude"
-    ]
-  },
-  "enableAllProjectMcpServers": true,
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ruff check --fix {{files}} 2>/dev/null || true && ruff format {{files}} 2>/dev/null || true"
-          },
-          {
-            "type": "command",
-            "command": "mypy {{files}} --no-error-summary 2>/dev/null || true"
-          },
-          {
-            "type": "command",
-            "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.md ]]; then rumdl fmt \"$f\" 2>/dev/null || true; fi; }",
-            "statusMessage": "Formatting Markdown..."
-          },
-          {
-            "type": "agent",
-            "prompt": "Extract the file path from $ARGUMENTS and run mcp__ide__getDiagnostics on it to check for errors"
-          }
-        ]
-      }
-    ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
-  },
-  "enabledPlugins": {
-    "astral@astral-sh": true,
-    "superpowers@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
-    "terraform-code-generation@hashicorp": true,
-    "terraform-module-generation@hashicorp": true,
-    "terraform-provider-development@hashicorp": true,
-    "skill-creator@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "astral-sh": {
-      "source": {
-        "source": "github",
-        "repo": "astral-sh/claude-code-plugins"
-      }
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "cleanupPeriodDays": 90,
+    "env": {
+        "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90",
+        "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
+        "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+        "CLAUDE_CODE_NEW_INIT": "1",
+        "DISABLE_ERROR_REPORTING": "1",
+        "DISABLE_TELEMETRY": "1",
+        "ENABLE_TOOL_SEARCH": "true",
+        "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
+        "USE_BUILTIN_RIPGREP": "true"
     },
-    "hashicorp": {
-      "source": {
-        "source": "github",
-        "repo": "hashicorp/agent-skills"
-      }
-    }
-  },
-  "outputStyle": "default",
-  "spinnerTipsEnabled": false,
-  "alwaysThinkingEnabled": true,
-  "autoMemoryEnabled": true,
-  "autoDreamEnabled": true
+    "includeCoAuthoredBy": false,
+    "permissions": {
+        "allow": [
+            "Bash(ast-grep:*)",
+            "Bash(bat:*)",
+            "Bash(cat:*)",
+            "Bash(docker events:*)",
+            "Bash(docker images:*)",
+            "Bash(docker ps:*)",
+            "Bash(fd:*)",
+            "Bash(find:*)",
+            "Bash(git branch:*)",
+            "Bash(git diff:*)",
+            "Bash(git log:*)",
+            "Bash(git remote:*)",
+            "Bash(git rev-parse:*)",
+            "Bash(git show:*)",
+            "Bash(git stash list:*)",
+            "Bash(git status:*)",
+            "Bash(git switch:*)",
+            "Bash(git symbolic-ref:*)",
+            "Bash(git tag:*)",
+            "Bash(glab issue:*)",
+            "Bash(head:*)",
+            "Bash(jq:*)",
+            "Bash(ls:*)",
+            "Bash(node --version:*)",
+            "Bash(npm list:*)",
+            "Bash(npm outdated:*)",
+            "Bash(npm view:*)",
+            "Bash(pipenv run:*)",
+            "Bash(poetry env info:*)",
+            "Bash(poetry show:*)",
+            "Bash(pwd:*)",
+            "Bash(pytest:*)",
+            "Bash(python:*)",
+            "Bash(python3:*)",
+            "Bash(rg:*)",
+            "Bash(sed:*)",
+            "Bash(tail:*)",
+            "Bash(uv pip list:*)",
+            "Bash(uv run:*)",
+            "Bash(uv tree:*)",
+            "Bash(wc:*)",
+            "mcp__ide__getDiagnostics",
+            "mcp__server-filesystem__create_directory",
+            "mcp__server-filesystem__directory_tree",
+            "mcp__server-filesystem__get_file_info",
+            "mcp__server-filesystem__list_allowed_directories",
+            "mcp__server-filesystem__list_directory",
+            "mcp__server-filesystem__read_multiple_files",
+            "mcp__server-filesystem__read_text_file",
+            "mcp__server-filesystem__search_files",
+            "mcp__server-git__git_diff",
+            "mcp__home-assistant",
+            "mcp__server-time",
+            "mcp__sonarqube__analyze_code_snippet",
+            "mcp__sonarqube__search_my_sonarqube_projects",
+            "mcp__sonarqube__show_rule",
+            "Edit(**/*.py)",
+            "Edit(**/*.md)",
+            "Edit(**/*.json)",
+            "Read(**/*.md)",
+            "Read(**/*.py)",
+            "Read(**/*.json)",
+            "Read(**/pyproject.toml)",
+            "Read(**/requirements*.txt)",
+            "Skill(glab)",
+            "Write(**/*.md)",
+            "Write(**/*.py)"
+        ],
+        "deny": [
+            "Bash(rm -fr *)",
+            "Bash(sudo *)",
+            "Bash(mkfs *)",
+            "Bash(dd *)",
+            "Bash(wget *|bash*)",
+            "Bash(wget *| bash*)",
+            "Bash(git push*)",
+            "Bash(git push --force*)",
+            "Bash(git push *--force*)",
+            "Edit(~/.bashrc)",
+            "Edit(~/.zshrc)",
+            "Edit(~/.ssh/**)",
+            "Read(~/.ssh/**)",
+            "Read(~/.aws/**)",
+            "Read(~/.git-credentials)",
+            "Read(~/.docker/config.json)",
+            "Read(~/.kube/**)",
+            "Read(~/.npmrc)",
+            "Read(~/.npm/**)",
+            "Read(~/.pypirc)",
+            "Read(~/Library/Keychains/**)"
+        ],
+        "ask": [
+            "Bash(git add:*)",
+            "Bash(git commit:*)",
+            "Bash(git reset --hard*)",
+            "Bash(glab api:*)",
+            "Bash(pip uninstall*)",
+            "mcp__server-filesystem__edit_file",
+            "mcp__server-filesystem__move_file",
+            "mcp__server-filesystem__write_file",
+            "mcp__server-git__git_add"
+        ],
+        "defaultMode": "default",
+        "additionalDirectories": [
+            "/Users/josephgruber/dev"
+        ]
+    },
+    "enableAllProjectMcpServers": true,
+    "hooks": {
+        "SessionStart": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "/Users/josephgruber/.claude/hooks/session_start.py"
+                    }
+                ]
+            }
+        ],
+        "PostToolUse": [
+            {
+                "matcher": "Edit|Write|MultiEdit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.py ]]; then uv run ruff check --fix \"$f\" 1>&2; rc=$?; uv run ruff format \"$f\" >/dev/null 2>&1; exit $((rc ? 2 : 0)); fi; }",
+                        "statusMessage": "Linting Python..."
+                    },
+                    {
+                        "type": "command",
+                        "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.py ]]; then uvx ty check \"$f\" 1>&2; rc=$?; exit $((rc ? 2 : 0)); fi; }",
+                        "statusMessage": "Type checking Python..."
+                    },
+                    {
+                        "type": "command",
+                        "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.md ]]; then rumdl fmt \"$f\" >/dev/null 2>&1; rumdl check \"$f\" 1>&2; rc=$?; exit $((rc ? 2 : 0)); fi; }",
+                        "statusMessage": "Formatting Markdown..."
+                    }
+                ]
+            }
+        ]
+    },
+    "statusLine": {
+        "type": "command",
+        "command": "~/.claude/statusline.sh"
+    },
+    "enabledPlugins": {
+        "astral@astral-sh": true,
+        "superpowers@claude-plugins-official": true,
+        "claude-md-management@claude-plugins-official": true,
+        "code-simplifier@claude-plugins-official": true,
+        "feature-dev@claude-plugins-official": true,
+        "code-review@claude-plugins-official": true,
+        "security-guidance@claude-plugins-official": true,
+        "pr-review-toolkit@claude-plugins-official": true,
+        "terraform-code-generation@hashicorp": true,
+        "terraform-module-generation@hashicorp": true,
+        "terraform-provider-development@hashicorp": true,
+        "skill-creator@claude-plugins-official": true
+    },
+    "extraKnownMarketplaces": {
+        "astral-sh": {
+            "source": {
+                "source": "github",
+                "repo": "astral-sh/claude-code-plugins"
+            }
+        },
+        "hashicorp": {
+            "source": {
+                "source": "github",
+                "repo": "hashicorp/agent-skills"
+            }
+        }
+    },
+    "outputStyle": "default",
+    "spinnerTipsEnabled": false,
+    "alwaysThinkingEnabled": true,
+    "autoMemoryEnabled": true,
+    "autoDreamEnabled": true
 }

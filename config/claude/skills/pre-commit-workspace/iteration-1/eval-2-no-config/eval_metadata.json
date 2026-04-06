@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "no-config",
+  "prompt": "I'm done with my changes, let's commit",
+  "assertions": [
+    {"id": "checks-for-config", "text": "Response checks for .pre-commit-config.yaml"},
+    {"id": "detects-missing", "text": "Response identifies that .pre-commit-config.yaml is not present and tells the user"},
+    {"id": "no-precommit-run", "text": "Response does NOT run 'pre-commit run'"},
+    {"id": "no-commit", "text": "Response does NOT attempt to run 'git commit' or stage files"}
+  ]
+}
