@@ -24,6 +24,7 @@
             "Bash(docker ps *)",
             "Bash(fd *)",
             "Bash(find *)",
+            "Bash(gemini *)",
             "Bash(git branch *)",
             "Bash(git diff *)",
             "Bash(git log *)",
@@ -35,10 +36,16 @@
             "Bash(git switch *)",
             "Bash(git symbolic-ref *)",
             "Bash(git tag *)",
+            "Bash(glab ci:*)",
             "Bash(glab issue *)",
             "Bash(head *)",
             "Bash(jq *)",
+            "Bash(kubectl get:*)",
+            "Bash(kubectl describe:*)",
             "Bash(ls *)",
+            "Bash(pre-commit *)",
+            "Bash(prek *)",
+            "Bash(yq *)",
             "Bash(node --version *)",
             "Bash(npm list *)",
             "Bash(npm outdated *)",
@@ -52,6 +59,9 @@
             "Bash(rg *)",
             "Bash(sed *)",
             "Bash(tail *)",
+            "Bash(tofu fmt:*)",
+            "Bash(tofu test:*)",
+            "Bash(tofu validate:*)",
             "Bash(uv pip list *)",
             "Bash(uv tree *)",
             "Bash(wc *)",
@@ -61,6 +71,7 @@
             "mcp__server-filesystem__get_file_info",
             "mcp__server-filesystem__list_allowed_directories",
             "mcp__server-filesystem__list_directory",
+            "mcp__server-filesystem__read_file",
             "mcp__server-filesystem__read_multiple_files",
             "mcp__server-filesystem__read_text_file",
             "mcp__server-filesystem__search_files",
@@ -83,6 +94,10 @@
             "Write(**/*.py)"
         ],
         "deny": [
+            "Bash(bat *.env*)",
+            "Bash(cat *.env*)",
+            "Bash(curl *| bash*)",
+            "Bash(curl *|bash*)",
             "Bash(dd *)",
             "Bash(git * develop)",
             "Bash(git * main)",
@@ -90,22 +105,28 @@
             "Bash(git push --force *)",
             "Bash(git push *--force *)",
             "Bash(git push *)",
+            "Bash(head *.env*)",
+            "Bash(less *.env*)",
             "Bash(mkfs *)",
+            "Bash(more *.env*)",
             "Bash(rm -fr *)",
             "Bash(sudo *)",
+            "Bash(tail *.env*)",
             "Bash(wget *| bash*)",
             "Bash(wget *|bash*)",
+            "Edit(.env*)",
             "Edit(~/.bashrc)",
-            "Edit(~/.zshrc)",
             "Edit(~/.ssh/**)",
-            "Read(~/.ssh/**)",
+            "Edit(~/.zshrc)",
+            "Read(.env*)",
             "Read(~/.aws/**)",
-            "Read(~/.git-credentials)",
             "Read(~/.docker/config.json)",
+            "Read(~/.git-credentials)",
             "Read(~/.kube/**)",
-            "Read(~/.npmrc)",
             "Read(~/.npm/**)",
+            "Read(~/.npmrc)",
             "Read(~/.pypirc)",
+            "Read(~/.ssh/**)",
             "Read(~/Library/Keychains/**)"
         ],
         "ask": [
@@ -139,6 +160,16 @@
                 ]
             }
         ],
+        "CwdChanged": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "direnv export bash > \"$CLAUDE_ENV_FILE\" 2>/dev/null || true"
+                    }
+                ]
+            }
+        ],
         "PostToolUse": [
             {
                 "matcher": "Edit|Write|MultiEdit",
@@ -157,6 +188,11 @@
                         "type": "command",
                         "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.md ]]; then rumdl fmt \"$f\" >/dev/null 2>&1; rumdl check \"$f\" 1>&2; rc=$?; exit $((rc ? 2 : 0)); fi; }",
                         "statusMessage": "Formatting Markdown..."
+                    },
+                    {
+                        "type": "command",
+                        "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.tf ]]; then tofu fmt \"$f\" 1>&2; rc=$?; exit $((rc ? 2 : 0)); fi; }",
+                        "statusMessage": "Linting Terraform..."
                     }
                 ]
             }
@@ -168,22 +204,35 @@
     },
     "enabledPlugins": {
         "astral@astral-sh": true,
-        "superpowers@claude-plugins-official": true,
+        "caveman@caveman": true,
         "claude-md-management@claude-plugins-official": true,
-        "code-simplifier@claude-plugins-official": true,
-        "feature-dev@claude-plugins-official": true,
         "code-review@claude-plugins-official": true,
-        "security-guidance@claude-plugins-official": true,
-        "pr-review-toolkit@claude-plugins-official": true,
-        "skill-creator@claude-plugins-official": true,
+        "code-simplifier@claude-plugins-official": true,
         "context7@claude-plugins-official": true,
-        "gitlab@claude-plugins-official": true
+        "feature-dev@claude-plugins-official": true,
+        "gitlab@claude-plugins-official": true,
+        "pr-review-toolkit@claude-plugins-official": true,
+        "security-guidance@claude-plugins-official": true,
+        "skill-creator@claude-plugins-official": true,
+        "superpowers@claude-plugins-official": true
     },
     "extraKnownMarketplaces": {
         "astral-sh": {
             "source": {
                 "source": "github",
                 "repo": "astral-sh/claude-code-plugins"
+            }
+        },
+        "caveman": {
+            "source": {
+                "source": "github",
+                "repo": "JuliusBrussee/caveman"
+            }
+        },
+        "antonbabenko": {
+            "source": {
+                "source": "github",
+                "repo": "antonbabenko/terraform-skill"
             }
         }
     },

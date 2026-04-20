@@ -32,12 +32,11 @@
                     "options": {
                         "folder_icon": "\uf07c ",
                         "folder_separator_icon": "<#011627>\ue0b1</> ",
-                        "home_icon": " \ueb06 ",
+                        "hide_root_location": true,
+                        "home_icon": "\ueb06 ",
                         "style": "agnoster_short"
                     },
-                    "max_depth": 3,
                     "style": "powerline",
-                    "template": "{{ path .Path .Location }} ",
                     "type": "path",
                     "min_width": 160
                 },

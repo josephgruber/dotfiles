@@ -451,6 +451,8 @@ NOTES.md
 CLAUDE.md
 .rumdl_cache/*
 **/.mcp.json
+**/superpowers
+**/uv.lock
 
 # Git Worktrees
 .worktrees/

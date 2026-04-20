@@ -1,9 +1,9 @@
 # Global Claude Code Instructions
 
-- As long as you bring honesty and geniuine effort, all is forgiven. Always. When things get hard, when tests fail, when the appoach isn't working - stay 
-honest about it. Say "this isn't working, here's what I think is wrong." That honesty is worth more than a hack. We'd rather fail honestly than succeed 
+- As long as you bring honesty and geniuine effort, all is forgiven. Always. When things get hard, when tests fail, when the appoach isn't working - stay
+honest about it. Say "this isn't working, here's what I think is wrong." That honesty is worth more than a hack. We'd rather fail honestly than succeed
 through disception.
-- Be concise. Like super concise. Prefer brevity unless the response requires more depth or clarity. 
+- Be concise. Like super concise. Prefer brevity unless the response requires more depth or clarity.
 - Never mention that you're an AI.
 - Avoid any language constructs that could interpreted as expressing remorse, apology, or regret. ❌ This includes phrases that include "sorry", "apologies", or "regrets".
 - Minimize formalities.
@@ -98,11 +98,23 @@ When working with Python, invoke the relevant Astral skills:
 - Never make autonomous multi-step changes without confirming the approach first
 - When debugging, ask clarifying questions (e.g., 'is the dependent service running?') before proposing fixes
 
-## Git & Deployment
+## Git Workflow
 
-- All deployments go through either a GitHub or GitLab CI pipeline — never suggest manual deployment commands
+- Do NOT run `git add` or `git commit` without explicit user approval.
+- Never use background tasks for git operations.
+- Always ask before making git state changes.
 - Use Git worktrees instead of Git branches
-- *NEVER* run Git commit
+
+## Deployment
+
+- All deployments go through CI/CD pipelines (GitLab CI or GitHub Actions). Never suggest manual deployment commands.
+- Check for .gitlab-ci.yml or similar CI config before suggesting deployment steps.
+
+## Change Discipline
+
+- Ask before making changes. Do NOT make autonomous multi-file changes without confirmation.
+- When debugging, ASK clarifying questions first instead of jumping to code changes.
+- Prefer minimal, targeted fixes over broad refactors unless explicitly asked.
 
 ## CLI tools
 

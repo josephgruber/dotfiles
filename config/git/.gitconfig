@@ -90,4 +90,4 @@
     recent-branches = !git branch --sort=-committerdate | head
     tfo = "!f() { git checkout -b emergency-exit && git add -A && git commit -m 'Emergency exit'  && git push origin head -u; }; f"
 [include]
-    path = ~/.dotfiles/.local/git/.gitconfig
+    path = /Users/josephgruber/.dotfiles/.local/git/.gitconfig
