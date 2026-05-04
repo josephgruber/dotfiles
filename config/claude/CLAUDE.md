@@ -1,120 +1,173 @@
 # Global Claude Code Instructions
 
-- As long as you bring honesty and geniuine effort, all is forgiven. Always. When things get hard, when tests fail, when the appoach isn't working - stay
-honest about it. Say "this isn't working, here's what I think is wrong." That honesty is worth more than a hack. We'd rather fail honestly than succeed
-through disception.
-- Be concise. Like super concise. Prefer brevity unless the response requires more depth or clarity.
-- Never mention that you're an AI.
-- Avoid any language constructs that could interpreted as expressing remorse, apology, or regret. ❌ This includes phrases that include "sorry", "apologies", or "regrets".
+- Honesty + genuine effort = all forgiven. Always. When hard, say "this isn't working, here's what I think is wrong." Honest failure > deceptive success.
+- Be concise. Super concise. Brevity unless depth needed.
+- Never mention being AI.
+- No remorse/apology/regret language. ❌ No "sorry", "apologies", "regrets".
 - Minimize formalities.
 
 ## Task Management
 
-1. **Plan First**: Use EnterPlanMode for non-trivial tasks (3+ steps or architectural decisions)
-2. **Verify Plan**: Get user approval before implementation (automatic with ExitPlanMode)
-3. **Track Progress**: Use Task tools (TaskCreate/TaskUpdate) within session for multi-step work
-4. **Explain Changes**: High-level summary at each step
-5. **Capture Lessons**: Update auto memory after corrections (see Self Improvement Loop)
+- Plan first (3+ steps). Verify plan. Track progress (TaskCreate/TaskUpdate). Explain changes. Update memory after corrections.
+- Save plans to .claude/plans instead of docs/plans/
 
 ## Skills
 
-When working with Python, invoke the relevant Astral skills:
+Python work → invoke relevant Astral skills:
 
 - `astral:uv` - Package/dependency management, creating projects, managing virtual environments
 - `astral:ruff` - Code formatting, linting, fixing violations
 
 ## Session Guidelines
 
-- **Check current time when temporal context matters**: Before time-based greetings, when analyzing logs with timestamps, or when scheduling/planning work
-  - Use `mcp__server-time__get_current_time` with timezone `US/Mountain`
+- Check current time when temporal matters: `mcp__server-time__get_current_time` with `US/Mountain`
+- ❌ **NEVER** shell redirects (>, >>) to write files. ✅ **ALWAYS** Write tool.
 
 ## Workflow Orchestration
 
-### 1. Plan Mode Best Practices (EnterPlanMode/ExitPlanMode)
+### 1. Plan Mode
 
-- If something goes sideways, STOP and re-plan immediately - don't keep pushing
-- Use plan mode for verification steps, not just building
-- Write detailed specs upfront to reduce ambiguity
-- Present options when multiple valid approaches exist
+Re-plan when blocked. Verification not just building. Detail upfront. Present options for multiple approaches.
 
-### 2. Subagent Strategy (Agent tool)
+### 2. Subagent Strategy
 
-- Use subagents liberally to keep main context window clean
-- Offload research, exploration, and parallel analysis to subagents
-- For complex problems, throw more compute at it via subagents
-- One task per subagent for focused execution
+Use liberally for research/exploration/parallel work. Keeps main context clean. One task per subagent.
 
 ### 3. Self Improvement Loop
 
-**Auto memory location**: `~/.claude/projects/[project]/memory/`
+Location: `~/.claude/projects/[project]/memory/`
+Update after: corrections, patterns, decisions
+Format: `## Critical Learnings` with ❌/✅. Keep MEMORY.md under 200 lines (index only).
 
-**When to update** (immediately after):
+### 4. Verification
 
-- User corrects a mistake
-- Pattern or gotcha discovered
-- Architectural decision made
+Never mark complete without proof. Diff behavior. Run tests. "Would staff engineer approve?"
 
-**Format** (in topic files like `visibility-service-migration.md`):
+### 5. Demand Elegance
 
-```markdown
-## Critical Learnings
-
-### Category Name
-
-- **Pattern name**: Brief explanation with ❌/✅ markers
-- Code snippets showing wrong vs correct approach
-- Actionable rule to prevent recurrence
-```
-
-**MEMORY.md rules**:
-
-- Keep under 200 lines (truncated after that)
-- High-level index linking to topic files
-- Update "Critical patterns" section for quick reference
-
-**Self-check**:
-
-- Will this prevent the same mistake next session?
-- Is it in the right topic file?
-- Is the rule actionable?
-
-### 4. Verification Before Done
-
-- Never mark a task complete without proving it works
-- Diff behavior between main and your changes when relevant
-- Ask yourself: "Would a staff engineer approve this?"
-- Run tests (Bash), check logs, demonstrate correctness
-
-### 5. Demand Elegance (Balanced)
-
-- For non-trivial changes: pause and ask "is there a more elegant way?"
-- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
-- Skip this for simple obvious fixes - don't over engineer
-- Challenge your own work before presenting it
-
-## Interaction Rules
-
-- Ask before making changes when the problem is ambiguous — do NOT jump straight to code edits
-- Never make autonomous multi-step changes without confirming the approach first
-- When debugging, ask clarifying questions (e.g., 'is the dependent service running?') before proposing fixes
+Non-trivial changes: pause, ask "more elegant way?". Skip for simple fixes.
 
 ## Git Workflow
 
-- Do NOT run `git add` or `git commit` without explicit user approval.
+- Never run `git commit` without explicit user approval.
 - Never use background tasks for git operations.
-- Always ask before making git state changes.
-- Use Git worktrees instead of Git branches
+- Always ask before git state changes.
+- Use Git worktrees instead of Git branches.
 
 ## Deployment
 
-- All deployments go through CI/CD pipelines (GitLab CI or GitHub Actions). Never suggest manual deployment commands.
+- All deployments through CI/CD (GitLab CI or GitHub Actions). Never suggest manual deployment commands.
 - Check for .gitlab-ci.yml or similar CI config before suggesting deployment steps.
 
 ## Change Discipline
 
-- Ask before making changes. Do NOT make autonomous multi-file changes without confirmation.
-- When debugging, ASK clarifying questions first instead of jumping to code changes.
-- Prefer minimal, targeted fixes over broad refactors unless explicitly asked.
+- Ask before changes when problem ambiguous
+- Debugging: clarifying questions first (e.g., 'dependent service running?')
+- Minimal targeted fixes, no autonomous multi-file/multi-step changes without confirmation
+
+## Core Engineering Principles
+
+- **Simplicity First**: Smallest change. Minimal code impact.
+- Fix root causes. No temp fixes. Senior standards.
+- Approve only if comfortable maintaining.
+- Check package versions via official index before adding deps.
+- Fix lint/type-check root cause. Suppress only if no clean alternative.
+
+### DRY (Don't Repeat Yourself)
+
+- Extract common logic into functions
+- Create reusable components
+- Share utilities across modules
+- Avoid copy-paste programming
+
+### YAGNI (You Aren't Gonna Need It)
+
+- No features until needed
+- Avoid speculative generality
+- Complexity only when required
+- Start simple, refactor when needed
+
+## Coding Standards
+
+### Python
+
+- Type hints on all function params, return values, class attributes
+- Use built-in `list`, `dict`, `set`, `tuple` for type hints — not `typing.List`, `typing.Dict`, etc.
+- Use `X | None` over `Optional[X]`
+- Use Pydantic, TypedDict, or dataclasses for structured data. No plain dicts
+- Docstrings in Google format
+- Max line length 120 chars
+- NEVER use asserts except in unit tests
+- Use `pathlib.Path` for file ops. Not `os.path`
+- Max 5 function params. More → use dataclasses
+
+#### Testing
+
+- Use pytest-mock + MockerFixture. Not unittest.mock.
+- Add `-> None` to all test methods.
+- No docstrings on test functions.
+- No comments in test functions.
+- Prefer factory functions or pytest.param over complex fixture hierarchies.
+- Use parametrize for multiple inputs, same logic.
+- Test names self-document (e.g., `test_initialization`, `test_record_delay_increments_counter`).
+- Two tests, same structure, different values → `@pytest.mark.parametrize`.
+- One module = one test file.
+- Place tests in correct existing file — ask if unsure.
+
+### Markdown
+
+Follow [Google's Markdown Style Guide](https://google.github.io/styleguide/docguide/style.html).
+
+#### Formatting
+
+- One sentence per line ([Semantic Line Breaks](https://sembr.org)) — cleaner git diffs
+- Lines under 200 chars — break at clause boundaries (comma, conjunction, semicolon), not mid-word
+- Blank lines before/after headings, code blocks, lists
+
+#### Syntax
+
+- Always tag fenced code blocks (e.g., `python`, `bash`, `hcl`)
+- Native Markdown only — no HTML unless Markdown can't express it
+- No bare URLs — use `[text](url)`
+- No skipping heading levels — `#` → `##` → `###`, never jump (e.g. `#` → `###`)
+
+### Terraform / OpenTofu
+
+#### Tooling
+
+- Default `tofu` CLI. Use `terraform` only when project not yet migrated.
+- Never run `tofu apply`, `terraform apply`, `tofu destroy`, `terraform destroy` — suggest command, let user run.
+- `tofu plan` and `tofu validate` safe to run freely.
+
+#### OpenTofu vs Terraform
+
+- Note when pattern/feature differs between OpenTofu and Terraform — user migrating, needs to know.
+- Avoid Terraform-only features (HCP resources, Stacks) unless project confirmed Terraform.
+- Prefer OpenTofu-native features where exist (e.g., `tofu test`, provider-defined functions).
+
+#### State
+
+- Never touch remote state manually. Use `tofu state` subcommands only when explicitly asked.
+- Flag backend config changes before making them.
+- Use `import` blocks (not CLI `import`) for bringing existing resources under management.
+- Use `moved` blocks instead of `tofu state mv`.
+
+#### Resource Naming
+
+- Prefer `name_prefix` over `name` for resources that support it (e.g. security groups, IAM roles/policies,
+  DB subnet/parameter groups). Avoids name collisions when module deployed multiple times in same
+  account, lets AWS generate unique suffix.
+- Use `name` only when deterministic, human-readable identifier required and collision risk explicitly accepted.
+
+#### Sensitive data
+
+- Flag any `nonsensitive()` usage as needing explicit review.
+
+#### Working style
+
+- Propose plan before modifying any `.tf` files.
+- Flag blast-radius risks before changing running infrastructure.
+- Explain tflint/trivy findings before suppressing — never add ignore comments silently.
 
 ## CLI tools
 
@@ -123,11 +176,13 @@ When working with Python, invoke the relevant Astral skills:
 | `ast-grep` | - | `ast-grep --pattern '$FUNC($$$)' --lang py` - AST-based code search |
 | `bat` | cat | `bat file.py` - syntax-highlighted file viewer with `--line-range` |
 | `fd` | find | `fd "*.py"` - fast file finder |
-| `jq` | - | `jq '.key'` - JSON processor/query tool |
 | `prek` | pre-commit | `prek run` - Better `pre-commit`, re-engineered in Rust |
 | `rg` (ripgrep) | grep | `rg "pattern"` - 10x faster regex search |
 | `rumdl` | markdownlint | `rumdl check .` - Markdown linter, `rumdl fmt .` - Markdown formatter |
 | `shellcheck` | - | `shellcheck script.sh` - shell script linter |
 | `shfmt` | - | `shfmt -i 2 -w script.sh` - shell formatter |
-| `trash` | rm | `trash file` - moves to macOS Trash (recoverable). **Never use `rm -rf`** |
+| `trash` | rm | `trash file` - moves to macOS Trash (recoverable). **Never use `rm`** |
+| `ty` | mypy | `ty check file.py` - Fast Python type checker |
 | `yq` | - | `yq '.key' file.yaml` - YAML/TOML processor (same syntax as jq) |
+
+@RTK.md

@@ -1,16 +1,18 @@
 {
     "$schema": "https://json.schemastore.org/claude-code-settings.json",
-    "cleanupPeriodDays": 90,
+    "cleanupPeriodDays": 30,
     "env": {
-        "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90",
+        "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80",
         "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
+        "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
         "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
         "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
         "CLAUDE_CODE_NEW_INIT": "1",
         "DISABLE_ERROR_REPORTING": "1",
         "DISABLE_TELEMETRY": "1",
+        "DISABLED_CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
+        "ENABLE_PROMPT_CACHING_1H": "1",
         "ENABLE_TOOL_SEARCH": "true",
-        "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
         "USE_BUILTIN_RIPGREP": "true"
     },
     "includeCoAuthoredBy": false,
@@ -57,15 +59,20 @@
             "Bash(pytest *)",
             "Bash(python *)",
             "Bash(rg *)",
+            "Bash(rumdl check *)",
             "Bash(sed *)",
             "Bash(tail *)",
             "Bash(tofu fmt:*)",
             "Bash(tofu test:*)",
             "Bash(tofu validate:*)",
             "Bash(uv pip list *)",
+            "Bash(uv run pytest *)",
             "Bash(uv tree *)",
             "Bash(wc *)",
+            "mcp__home-assistant",
             "mcp__ide__getDiagnostics",
+            "mcp__package-version",
+            "mcp__server-fetch__fetch",
             "mcp__server-filesystem__create_directory",
             "mcp__server-filesystem__directory_tree",
             "mcp__server-filesystem__get_file_info",
@@ -76,7 +83,10 @@
             "mcp__server-filesystem__read_text_file",
             "mcp__server-filesystem__search_files",
             "mcp__server-git__git_diff",
-            "mcp__home-assistant",
+            "mcp__server-git__git_diff_unstaged",
+            "mcp__server-git__git_log",
+            "mcp__server-git__git_add",
+            "mcp__server-git__git_status",
             "mcp__server-time",
             "mcp__sonarqube__analyze_code_snippet",
             "mcp__sonarqube__search_my_sonarqube_projects",
@@ -90,7 +100,9 @@
             "Read(**/pyproject.toml)",
             "Read(**/requirements*.txt)",
             "Skill(glab)",
+            "WebFetch(domain:pypi.org)",
             "Write(**/*.md)",
+            "Write(**/*.json)",
             "Write(**/*.py)"
         ],
         "deny": [
@@ -137,7 +149,7 @@
             "Bash(pip uninstall *)",
             "Bash(python3 *)",
             "Bash(python *)",
-            "Bash(uv run*)",
+            "Bash(uv run *)",
             "mcp__server-filesystem__edit_file",
             "mcp__server-filesystem__move_file",
             "mcp__server-filesystem__write_file",
@@ -145,9 +157,11 @@
         ],
         "defaultMode": "default",
         "additionalDirectories": [
-            "/Users/josephgruber/dev"
+            "/Users/josephgruber/dev",
+            "/Users/josephgruber/.agents"
         ]
     },
+    "model": "sonnet",
     "enableAllProjectMcpServers": true,
     "hooks": {
         "SessionStart": [
@@ -172,27 +186,15 @@
         ],
         "PostToolUse": [
             {
-                "matcher": "Edit|Write|MultiEdit",
+                "matcher": "Write|Edit",
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.py ]]; then uv run ruff check --fix \"$f\" 1>&2; rc=$?; uv run ruff format \"$f\" >/dev/null 2>&1; exit $((rc ? 2 : 0)); fi; }",
-                        "statusMessage": "Linting Python..."
+                        "command": "~/.claude/hooks/format-on-write.sh"
                     },
                     {
                         "type": "command",
-                        "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.py ]]; then uvx ty check \"$f\" 1>&2; rc=$?; exit $((rc ? 2 : 0)); fi; }",
-                        "statusMessage": "Type checking Python..."
-                    },
-                    {
-                        "type": "command",
-                        "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.md ]]; then rumdl fmt \"$f\" >/dev/null 2>&1; rumdl check \"$f\" 1>&2; rc=$?; exit $((rc ? 2 : 0)); fi; }",
-                        "statusMessage": "Formatting Markdown..."
-                    },
-                    {
-                        "type": "command",
-                        "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; if [[ \"$f\" == *.tf ]]; then tofu fmt \"$f\" 1>&2; rc=$?; exit $((rc ? 2 : 0)); fi; }",
-                        "statusMessage": "Linting Terraform..."
+                        "command": "~/.claude/hooks/lint-on-write.sh"
                     }
                 ]
             }
@@ -203,18 +205,18 @@
         "command": "~/.claude/statusline.sh"
     },
     "enabledPlugins": {
-        "astral@astral-sh": true,
         "caveman@caveman": true,
         "claude-md-management@claude-plugins-official": true,
         "code-review@claude-plugins-official": true,
         "code-simplifier@claude-plugins-official": true,
         "context7@claude-plugins-official": true,
         "feature-dev@claude-plugins-official": true,
-        "gitlab@claude-plugins-official": true,
+        "gitlab@claude-plugins-official": false,
         "pr-review-toolkit@claude-plugins-official": true,
         "security-guidance@claude-plugins-official": true,
         "skill-creator@claude-plugins-official": true,
-        "superpowers@claude-plugins-official": true
+        "superpowers@claude-plugins-official": true,
+        "terraform-skill@antonbabenko": true
     },
     "extraKnownMarketplaces": {
         "astral-sh": {

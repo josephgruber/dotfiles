@@ -12,6 +12,8 @@ paths:
 - **Simplicity First**: Make every change as simple as possible. Impact minimal code.
 - Find root causes. No temporary fixes. Senior developer standards.
 - Approve only when you'd be comfortable maintaining the code.
+- Always check package versions with the official package index when adding project dependencies
+- Always fix the root cause of linting or type-checking errors. Do not suppress them unless there is no clean alternative.
 
 ## DRY (Don't Repeat Yourself)
 

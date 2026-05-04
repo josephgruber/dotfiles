@@ -258,7 +258,7 @@ coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
-.pytest_cache/
+**/.pytest_cache/
 cover/
 
 # Translations
@@ -329,7 +329,8 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.venv
+.venv/
+**/.venv/
 env/
 venv/
 ENV/
@@ -347,7 +348,7 @@ venv.bak/
 /site
 
 # mypy
-.mypy_cache/
+**/.mypy_cache/
 .dmypy.json
 dmypy.json
 
@@ -446,13 +447,17 @@ terragrunt-debug.tfvars.json
 NOTES.md
 .continue/
 .continue/*
-.claude/
-.claude/*
+**/.claude/
+**/.claude/*
 CLAUDE.md
-.rumdl_cache/*
+**/.rumdl_cache/
 **/.mcp.json
 **/superpowers
 **/uv.lock
+.agents/
+**/skills-lock.json
+**/impeccable.md
+**/PRODUCT.md
 
 # Git Worktrees
 .worktrees/

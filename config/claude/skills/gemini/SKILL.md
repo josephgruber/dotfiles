@@ -7,17 +7,17 @@ description: Manually invoke this skill when the user explicitly asks to consult
 
 ## What this skill is for
 
-This skill is **manually triggered by the user**. Do not invoke it unless asked.
+**User-triggered only.** Don't invoke unless asked.
 
-Two primary use cases:
+Two uses:
 
-1. **Second opinion / escalation** — The user wants an independent perspective on a hard problem: architectural tradeoffs, ambiguous bugs, design decisions where reasonable engineers disagree.
+1. **Second opinion / escalation** — User wants independent view on hard problem: architectural tradeoffs, ambiguous bugs, design decisions where engineers disagree.
 
-2. **Large context analysis** — The user wants Gemini to ingest a large codebase or set of files and return a synthesis. Gemini's context window handles large file sets that would exceed Claude's limits.
+2. **Large context analysis** — User wants Gemini to ingest large codebase or file set, return synthesis. Gemini's context window handles large file sets exceeding Claude's limits.
 
 ## Running Gemini
 
-Use the `gemini` CLI via Bash. Gemini can read files and search the web independently.
+Use `gemini` CLI via Bash. Gemini reads files and searches web independently.
 
 **Fresh session:**
 
@@ -25,55 +25,52 @@ Use the `gemini` CLI via Bash. Gemini can read files and search the web independ
 gemini -p "You are a senior consulting engineer. I am Claude, the lead engineer. [Context]. [Question]."
 ```
 
-**Continue the same session** (follow-up, pushback, or deeper question):
+**Continue same session** (follow-up, pushback, deeper question):
 
 ```bash
 gemini -p "Following up on your last point — [counter-argument or next question]." -r latest
 ```
 
-The `-r latest` flag resumes the most recent session, so Gemini has full context of what was said before.
+`-r latest` resumes most recent session — Gemini has full prior context.
 
 ## Back-and-Forth Protocol
 
-Conduct the full exchange with Gemini autonomously — do not relay partial results to the user mid-conversation.
-The user triggered this to get a synthesized outcome, not to be a message courier.
+Run full exchange with Gemini autonomously — don't relay partial results mid-conversation. User triggered this for synthesized outcome, not message courier.
 
-The loop:
+Loop:
 
-1. Send the initial prompt
+1. Send initial prompt
 2. Read Gemini's response
-3. Decide: is the response complete enough to synthesize, or does it need a follow-up?
-4. If follow-up is needed, run another `gemini -p "..." -r latest` — no user involvement yet
-5. Repeat until you have enough to form a unified recommendation
-6. Only then present the synthesized result to the user
+3. Decide: complete enough to synthesize, or needs follow-up?
+4. If follow-up needed, run another `gemini -p "..." -r latest` — no user involvement yet
+5. Repeat until enough for unified recommendation
+6. Only then present synthesized result to user
 
-Good reasons to continue the loop:
+Continue loop when:
 
-- Gemini raised a concern you want to push back on
-- The response was high-level and you need specifics
-- You disagree and want to make your counter-argument
-- A tradeoff was mentioned but not fully explored
+- Gemini raised concern worth pushing back on
+- Response too high-level, need specifics
+- You disagree, want counter-argument
+- Tradeoff mentioned but not fully explored
 
-Good reasons to stop:
+Stop when:
 
-- You have a clear, reasoned position to present
-- You and Gemini have reached agreement or productive disagreement
-- 3–4 rounds in and diminishing returns
+- Clear, reasoned position to present
+- Agreement or productive disagreement reached
+- 3–4 rounds in with diminishing returns
 
-Gemini's first response is often correct but generic. A single follow-up — pushing back, asking for specifics,
-or challenging an assumption — consistently produces a more refined and useful answer.
-Treat round 1 as the opening position, not the conclusion.
+Gemini's first response often correct but generic. Single follow-up — pushback, specifics request, challenging assumption — consistently produces more refined answer. Round 1 = opening position, not conclusion.
 
 ## Escalation (Second Opinion)
 
-Frame Gemini as a peer, not a search engine. Give it the context it needs to reason, not just facts to retrieve.
+Frame Gemini as peer, not search engine. Give context to reason, not just facts to retrieve.
 
-Good escalation prompt structure:
+Good escalation prompt:
 
 - Current state / constraints
-- What you (Claude) currently think and why
-- Where you're uncertain or where the user has doubts
-- Specific question you want Gemini's view on
+- What you (Claude) think and why
+- Where you're uncertain or user has doubts
+- Specific question for Gemini's view
 
 Example:
 
@@ -87,7 +84,7 @@ What are the real tradeoffs, and where does RLS tend to break down in practice?"
 
 ## Large Codebase Analysis
 
-Use `@` syntax to include files/directories in the prompt:
+Use `@` syntax to include files/directories:
 
 ```bash
 # Single file
@@ -103,14 +100,14 @@ gemini -p "@src/ @tests/ How well does the test coverage map to the core busines
 gemini -p "@./ Give me an architectural overview and flag anything that looks fragile"
 ```
 
-Paths are relative to your working directory when invoking the command.
+Paths relative to working directory when invoking.
 
 ## Synthesizing the output
 
-Don't just relay Gemini's response. Your job is to synthesize it with your own understanding:
+Don't relay Gemini's response. Synthesize with own understanding:
 
-1. Note where you and Gemini **agree** — this builds confidence in the direction
-2. Note where you **disagree** — explain the tradeoff and your reasoning for preferring one approach
-3. Give the user a **single clear recommendation** that incorporates both perspectives
+1. Where you and Gemini **agree** — builds confidence in direction
+2. Where you **disagree** — explain tradeoff, reasoning for preferred approach
+3. **Single clear recommendation** incorporating both perspectives
 
-The goal is a unified engineering judgment, not a "here's what Gemini said" summary.
+Goal: unified engineering judgment, not "here's what Gemini said."

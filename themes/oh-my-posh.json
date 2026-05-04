@@ -6,29 +6,10 @@
             "alignment": "left",
             "segments": [
                 {
-                    "background": "#21c7a8",
-                    "foreground": "#011627",
-                    "leading_diamond": "\u256d\u2500\ue0b6",
-                    "options": {
-                        "windows": "\ue62a"
-                    },
-                    "style": "diamond",
-                    "template": " {{.Icon}} ",
-                    "type": "os"
-                },
-                {
-                    "background": "#ef5350",
-                    "foreground": "#ffeb95",
-                    "powerline_symbol": "\ue0b0",
-                    "style": "powerline",
-                    "template": " \uf292 ",
-                    "type": "root",
-                    "min_width": 170
-                },
-                {
                     "background": "#82AAFF",
                     "foreground": "#011627",
                     "powerline_symbol": "\ue0b0",
+                    "leading_diamond": "\u256d\u2500\ue0b6",
                     "options": {
                         "folder_icon": "\uf07c ",
                         "folder_separator_icon": "<#011627>\ue0b1</> ",
@@ -36,7 +17,7 @@
                         "home_icon": "\ueb06 ",
                         "style": "agnoster_short"
                     },
-                    "style": "powerline",
+                    "style": "diamond",
                     "type": "path",
                     "min_width": 160
                 },

@@ -12,6 +12,7 @@ compinit
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 eval "$(ruff generate-shell-completion zsh)"
+eval "$(ty generate-shell-completion zsh)"
 
 # Docker completions
 if [ -d "$HOME/.docker" ] ; then
@@ -75,13 +76,17 @@ export AWS_PAGER=
 export BLOCKSIZE=1k
 export BUILDAH_FORMAT=docker
 export DEFAULT_USER="$USER"
+export DO_NOT_TRACK=true
+export DOCKER_CONTENT_TRUST=1
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="code --wait"
+export GH_TELEMETRY=false
 export HOMEBREW_NO_ENV_HINTS=1
 export PODMAN_COMPOSE_WARNING_LOGS=false
 export PYTHONSTARTUP=$DOTFILES/config/python/startup.py
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 export VISUAL="$EDITOR"
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # Global aliases
 alias cp="cp -iv"
@@ -161,14 +166,37 @@ fga() {
   fi
 }
 
-fkill() {
-  local pid
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-
-  if [ "x$pid" != "x" ]
-  then
-    echo $pid | xargs kill -${1:-9}
+unalias z 2> /dev/null
+z() {
+  if [ $# -gt 0 ]; then
+    __zoxide_z "$@"
+    return
   fi
+
+  local target
+  target=$(zoxide query --list --score |
+           fzf --height 40% --nth 2.. --reverse --inline-info +s \
+               --query "${*##-* }" |
+           awk '{$1=""; print $0}' | sed 's/^ //')
+
+  if [ -n "$target" ]; then
+    cd "$target"
+  fi
+}
+
+function da() {
+  local cid
+  cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
+
+  [ -n "$cid" ] && docker start "$cid" && docker attach "$cid"
+}
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
 }
 
 # Setup and configure pyenv (lazy-loaded to avoid lock issues)
