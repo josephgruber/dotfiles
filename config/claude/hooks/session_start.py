@@ -46,19 +46,6 @@ def get_git_info() -> dict[str, str | int]:
     }
 
 
-def get_docker_services() -> int:
-    """Count running Docker Compose services."""
-    output = run_cmd(["docker", "compose", "ps", "--format", "json"])
-    if not output:
-        return 0
-
-    try:
-        services = json.loads(f"[{output.replace('}\n{', '},{')}]")
-        return sum(1 for s in services if s.get("State") == "running")
-    except json.JSONDecodeError:
-        return 0
-
-
 def get_remote_type() -> str:
     """Detect remote type: gitlab, github, or empty."""
     remote = run_cmd(["git", "remote", "get-url", "origin"])
@@ -184,7 +171,6 @@ def main() -> None:
     git_info = get_git_info()
     branch = git_info["branch"]
     remote_type = get_remote_type()
-    services = get_docker_services()
     current_time = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M %Z")
 
     # Get additional context
@@ -216,8 +202,6 @@ def main() -> None:
 
     if ci_status:
         lines.append(ci_status)
-
-    lines.append(f"Docker services running: {services}")
 
     if python_env:
         lines.append(python_env)

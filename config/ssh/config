@@ -6,7 +6,7 @@ host i-* mi-*
 
 # Created by AWS Toolkit for VSCode. https://github.com/aws/aws-toolkit-vscode
 Host aws-ec2-*
-    ForwardAgent yes
+    # ForwardAgent yes
     AddKeysToAgent yes
     StrictHostKeyChecking accept-new
     ProxyCommand '/Users/josephgruber/Library/Application Support/Code/User/globalStorage/amazonwebservices.aws-toolkit-vscode/ec2_connect' '%h'

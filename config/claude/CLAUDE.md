@@ -87,6 +87,26 @@ Non-trivial changes: pause, ask "more elegant way?". Skip for simple fixes.
 - Complexity only when required
 - Start simple, refactor when needed
 
+### Code Intelligence
+
+Prefer LSP over Grep/Glob/Read for code navigation:
+
+- `goToDefinition` / `goToImplementation` to jump to source
+- `findReferences` to see all usages across the codebase
+- `workspaceSymbol` to find where something is defined
+- `documentSymbol` to list all symbols in a file
+- `hover` for type info without reading the file
+- `incomingCalls` / `outgoingCalls` for call hierarchy
+
+Before renaming or changing a function signature, use
+`findReferences` to find all call sites first.
+
+Use Grep/Glob only for text/pattern searches (comments,
+strings, config values) where LSP doesn't help.
+
+After writing or editing code, check LSP diagnostics before
+moving on. Fix any type errors or missing imports immediately.
+
 ## Coding Standards
 
 ### Python
@@ -100,6 +120,7 @@ Non-trivial changes: pause, ask "more elegant way?". Skip for simple fixes.
 - NEVER use asserts except in unit tests
 - Use `pathlib.Path` for file ops. Not `os.path`
 - Max 5 function params. More → use dataclasses
+- **Ruff auto-removes unused imports via hooks** - Add imports + use them in same Write/Edit operation.
 
 #### Testing
 

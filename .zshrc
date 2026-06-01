@@ -89,6 +89,7 @@ export VISUAL="$EDITOR"
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # Global aliases
+alias c="claude -p"
 alias cp="cp -iv"
 alias edit="code --wait"
 alias git_prune="git fetch --prune && git branch -vv | grep 'origin/.*: gone]' | awk '{print \$1}' | xargs git branch -d"
@@ -230,6 +231,9 @@ source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source $DOTFILES/themes/zsh-syntax-highlighting.sh
 source $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
+# 1Password Plugins
+source /Users/josephgruber/.config/op/plugins.sh
+
 # VSCode Integration
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
 
@@ -238,3 +242,6 @@ eval "$(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")"
 
 # Local Overrides. Keep at the bottom of this file.
 [ -f "${DOTFILES}/.local/.zshrc" ] && source "${DOTFILES}/.local/.zshrc"
+
+# Added by sonarqube-cli installer
+export PATH="$HOME/.local/share/sonarqube-cli/bin:$PATH"

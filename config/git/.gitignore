@@ -458,6 +458,8 @@ CLAUDE.md
 **/skills-lock.json
 **/impeccable.md
 **/PRODUCT.md
+pyrightconfig.json
 
 # Git Worktrees
 .worktrees/
+
