@@ -75,7 +75,7 @@
 [user]
     name = Joseph Gruber
 [alias]
-	authors = !git log --format='%aN <%aE>' | sort -u --ignore-case
+    authors = !git log --format='%aN <%aE>' | sort -u --ignore-case
     conflicts = diff --name-only --diff-filter=U
     dag = log --graph --format='format: %C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
     delete-merged = !git fetch && git branch --merged | egrep -v 'master' | xargs git branch -d
@@ -90,4 +90,4 @@
     recent-branches = !git branch --sort=-committerdate | head
     tfo = "!f() { git checkout -b emergency-exit && git add -A && git commit -m 'Emergency exit'  && git push origin head -u; }; f"
 [include]
-    path = /Users/josephgruber/.dotfiles/.local/git/.gitconfig
+    path = ~/.dotfiles/.local/git/.gitconfig

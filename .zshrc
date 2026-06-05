@@ -215,9 +215,6 @@ if [ -d "$HOME/.pyenv" ] ; then
     }
 fi
 
-# iTerm2 shell integration
-[[ "$TERM_PROGRAM" == "iTerm.app" ]] && zstyle :omz:plugins:iterm2 shell-integration yes
-
 # Setup and configure direnv (exclude Claude Code terminals)
 if [[ -z "$CLAUDECODE" ]]; then
     eval "$(direnv hook zsh)"
@@ -232,7 +229,7 @@ source $DOTFILES/themes/zsh-syntax-highlighting.sh
 source $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # 1Password Plugins
-source /Users/josephgruber/.config/op/plugins.sh
+source $HOME/.config/op/plugins.sh
 
 # VSCode Integration
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
@@ -240,8 +237,8 @@ source /Users/josephgruber/.config/op/plugins.sh
 # Initialize oh-my-posh with a custom theme
 eval "$(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")"
 
-# Local Overrides. Keep at the bottom of this file.
-[ -f "${DOTFILES}/.local/.zshrc" ] && source "${DOTFILES}/.local/.zshrc"
-
 # Added by sonarqube-cli installer
 export PATH="$HOME/.local/share/sonarqube-cli/bin:$PATH"
+
+# Local Overrides. Keep at the bottom of this file.
+[ -f "${DOTFILES}/.local/.zshrc" ] && source "${DOTFILES}/.local/.zshrc"
