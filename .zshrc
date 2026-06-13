@@ -9,10 +9,10 @@ autoload -Uz compinit
 compinit
 
 # Custom shell completions
-eval "$(uv generate-shell-completion zsh)"
-eval "$(uvx --generate-shell-completion zsh)"
-eval "$(ruff generate-shell-completion zsh)"
-eval "$(ty generate-shell-completion zsh)"
+command -v uv   &> /dev/null && eval "$(uv generate-shell-completion zsh)"
+command -v uvx  &> /dev/null && eval "$(uvx --generate-shell-completion zsh)"
+command -v ruff &> /dev/null && eval "$(ruff generate-shell-completion zsh)"
+command -v ty   &> /dev/null && eval "$(ty generate-shell-completion zsh)"
 
 # Docker completions
 if [ -d "$HOME/.docker" ] ; then
@@ -31,9 +31,6 @@ zstyle ':completion:*' substitute off
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*:descriptions' format '[%d]'
 
-# Initialize fzf-tab
-source $HOMEBREW_PREFIX/share/fzf-tab/fzf-tab.zsh
-
 # fzf-tab previews and styles
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
@@ -48,9 +45,10 @@ zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview 'git log --color=always --
 
 # Bash compatibility
 autoload bashcompinit && bashcompinit
-autoload -Uz compinit && compinit
-complete -C '/opt/homebrew/bin/aws_completer' aws
-complete -C '/opt/homebrew/bin/aws_completer' awslocal
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+    complete -C "$HOMEBREW_PREFIX/bin/aws_completer" aws
+    complete -C "$HOMEBREW_PREFIX/bin/aws_completer" awslocal
+fi
 
 # Ensure LS_COLORS is set (for fzf-tab colors)
 if command -v dircolors > /dev/null; then
@@ -63,7 +61,7 @@ fi
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000 # current session's history limit
 SAVEHIST=50000 # zsh saves this many lines from the in-memory history list to the history file upon shell exit
-HISTORY_IGNORE="(ls|cd|pwd|exit|cd|clear)*"
+HISTORY_IGNORE="(ls|cd|pwd|exit|clear)*"
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt INC_APPEND_HISTORY # history file is updated immediately after a command is entered
@@ -83,7 +81,7 @@ export EDITOR="code --wait"
 export GH_TELEMETRY=false
 export HOMEBREW_NO_ENV_HINTS=1
 export PODMAN_COMPOSE_WARNING_LOGS=false
-export PYTHONSTARTUP=$DOTFILES/config/python/startup.py
+export PYTHONSTARTUP="$DOTFILES/config/python/startup.py"
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 export VISUAL="$EDITOR"
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -105,10 +103,10 @@ alias untar="tar -zxvf"
 alias which="which -a"
 
 # Initialize zoxide
-eval "$(zoxide init zsh)"
+command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
 
 # Set up fzf key bindings and fuzzy completion
-eval "$(fzf --zsh)"
+command -v fzf &> /dev/null && eval "$(fzf --zsh)"
 export FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix --hidden --follow --exclude .git"
 
 export FZF_DEFAULT_OPTS="
@@ -131,6 +129,11 @@ export FZF_CTRL_T_OPTS="
 export FZF_ALT_C_OPTS="
   --walker-skip .git,node_modules,target
   --preview 'tree -C {} | head -200'"
+
+# Initialize fzf-tab
+if [[ -n "$HOMEBREW_PREFIX" ]] && [ -f "$HOMEBREW_PREFIX/share/fzf-tab/fzf-tab.zsh" ]; then
+    source "$HOMEBREW_PREFIX/share/fzf-tab/fzf-tab.zsh"
+fi
 
 # Setup and configure Node.js Version Manager (NVM) via lazy load
 if [ -d "$HOME/.nvm" ] ; then
@@ -167,7 +170,7 @@ fga() {
   fi
 }
 
-unalias z 2> /dev/null
+unalias z &> /dev/null
 z() {
   if [ $# -gt 0 ]; then
     __zoxide_z "$@"
@@ -193,11 +196,15 @@ function da() {
 }
 
 function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	command yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
+    if ! command -v yazi &> /dev/null; then
+        echo "Error: yazi is not installed." >&2
+        return 1
+    fi
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
 }
 
 # Setup and configure pyenv (lazy-loaded to avoid lock issues)
@@ -217,25 +224,37 @@ fi
 
 # Setup and configure direnv (exclude Claude Code terminals)
 if [[ -z "$CLAUDECODE" ]]; then
-    eval "$(direnv hook zsh)"
-    export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
+    if command -v direnv &> /dev/null; then
+        eval "$(direnv hook zsh)"
+        export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
+    fi
 fi
 
-# Load zsh-autosuggestions
-source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+    # Load zsh-autosuggestions
+    [ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
+        source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-# Load zsh-fast-syntax-highlighting and theme
-source $DOTFILES/themes/zsh-syntax-highlighting.sh
-source $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+    # Load zsh-fast-syntax-highlighting
+    [ -f "$HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ] && \
+        source "$HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+fi
+
+# Load zsh-syntax-highlighting theme
+[ -f "$DOTFILES/themes/zsh-syntax-highlighting.sh" ] && source "$DOTFILES/themes/zsh-syntax-highlighting.sh"
 
 # 1Password Plugins
-source $HOME/.config/op/plugins.sh
+if command -v op &> /dev/null; then
+    source "$HOME/.config/op/plugins.sh"
+fi
 
 # VSCode Integration
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
 
 # Initialize oh-my-posh with a custom theme
-eval "$(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")"
+if command -v oh-my-posh &> /dev/null && [ -f "$DOTFILES/themes/oh-my-posh.json" ]; then
+    eval "$(oh-my-posh init zsh --config "$DOTFILES/themes/oh-my-posh.json")"
+fi
 
 # Added by sonarqube-cli installer
 export PATH="$HOME/.local/share/sonarqube-cli/bin:$PATH"
