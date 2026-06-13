@@ -72,6 +72,7 @@ setopt APPENDHISTORY # ensures that each command entered in the current session 
 # Global environment variables
 export AWS_PAGER=
 export BLOCKSIZE=1k
+export HOMEBREW_NO_REQUIRE_TAP_TRUST=1
 export BUILDAH_FORMAT=docker
 export DEFAULT_USER="$USER"
 export DO_NOT_TRACK=true
