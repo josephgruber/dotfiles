@@ -1,4 +1,8 @@
-require("omp"):setup({ config = "/Users/josephgruber/.dotfiles/themes/oh-my-posh-yazi.json" })
+local home = os.getenv("HOME")
+
+require("omp"):setup({
+    config = home .. "/.dotfiles/themes/oh-my-posh-yazi.json"
+})
 -- require("omp"):setup()
 
 Status:children_add(function(self)

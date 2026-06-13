@@ -83,9 +83,9 @@
                         "style": "agnoster_short",
                         "max_depth": 3,
                         "mapped_locations": {
-                            "/Users/josephgruber/dev/": " ",
-                            "/Users/josephgruber/dev/work": "󰦑 ",
-                            "/Users/josephgruber/dev/work/sphinx": " "
+                            "~/dev/": " ",
+                            "~/dev/work": "󰦑 ",
+                            "~/dev/work/sphinx": " "
                         }
                     },
                     "cache": {
