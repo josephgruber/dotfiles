@@ -1,20 +1,23 @@
 {
     "$schema": "https://json.schemastore.org/claude-code-settings.json",
     "cleanupPeriodDays": 30,
+    "skillListingBudgetFraction": 0.015,
     "env": {
         "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80",
         "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
         "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
         "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
         "CLAUDE_CODE_NEW_INIT": "1",
         "DISABLE_ERROR_REPORTING": "1",
         "DISABLE_TELEMETRY": "1",
         "DISABLED_CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
+        "ENABLE_LSP_TOOL": "1",
         "ENABLE_PROMPT_CACHING_1H": "1",
         "ENABLE_TOOL_SEARCH": "true",
-        "USE_BUILTIN_RIPGREP": "true"
+        "USE_BUILTIN_RIPGREP": "1"
     },
+    "preferredNotifChannel": "ghostty",
+    "syntaxHighlightingDisabled": true,
     "includeCoAuthoredBy": false,
     "permissions": {
         "allow": [
@@ -47,7 +50,6 @@
             "Bash(ls *)",
             "Bash(pre-commit *)",
             "Bash(prek *)",
-            "Bash(yq *)",
             "Bash(node --version *)",
             "Bash(npm list *)",
             "Bash(npm outdated *)",
@@ -59,7 +61,12 @@
             "Bash(pytest *)",
             "Bash(python *)",
             "Bash(rg *)",
+            "Bash(rtk grep *)",
+            "Bash(rtk ls *)",
+            "Bash(rtk read *)",
             "Bash(rumdl check *)",
+            "Bash(scripts/test)",
+            "Bash(scripts/lint *)",
             "Bash(sed *)",
             "Bash(tail *)",
             "Bash(tofu fmt:*)",
@@ -69,9 +76,17 @@
             "Bash(uv run pytest *)",
             "Bash(uv tree *)",
             "Bash(wc *)",
+            "Bash(yq *)",
+            "mcp__context7",
             "mcp__home-assistant",
             "mcp__ide__getDiagnostics",
             "mcp__package-version",
+            "mcp__plugin_chrome-devtools-mcp_chrome-devtools__get_network_request",
+            "mcp__plugin_chrome-devtools-mcp_chrome-devtools__list_network_requests",
+            "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page",
+            "mcp__plugin_chrome-devtools-mcp_chrome-devtools__performance_analyze_insight",
+            "mcp__plugin_chrome-devtools-mcp_chrome-devtools__performance_start_trace",
+            "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_snapshot",
             "mcp__server-fetch__fetch",
             "mcp__server-filesystem__create_directory",
             "mcp__server-filesystem__directory_tree",
@@ -82,10 +97,10 @@
             "mcp__server-filesystem__read_multiple_files",
             "mcp__server-filesystem__read_text_file",
             "mcp__server-filesystem__search_files",
-            "mcp__server-git__git_diff",
-            "mcp__server-git__git_diff_unstaged",
-            "mcp__server-git__git_log",
             "mcp__server-git__git_add",
+            "mcp__server-git__git_diff_unstaged",
+            "mcp__server-git__git_diff",
+            "mcp__server-git__git_log",
             "mcp__server-git__git_status",
             "mcp__server-time",
             "mcp__sonarqube__analyze_code_snippet",
@@ -157,19 +172,30 @@
         ],
         "defaultMode": "default",
         "additionalDirectories": [
-            "/Users/josephgruber/dev",
-            "/Users/josephgruber/.agents"
+            "~/dev",
+            "~/.agents"
         ]
     },
     "model": "sonnet",
     "enableAllProjectMcpServers": true,
     "hooks": {
+        "Notification": [
+            {
+                "matcher": "",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "afplay /System/Library/Sounds/Glass.aiff"
+                    }
+                ]
+            }
+        ],
         "SessionStart": [
             {
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/josephgruber/.claude/hooks/session_start.py"
+                        "command": "~/.claude/hooks/session_start.py"
                     }
                 ]
             }
@@ -198,11 +224,23 @@
                     }
                 ]
             }
+        ],
+        "PreToolUse": [
+            {
+                "matcher": "Bash",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "rtk hook claude"
+                    }
+                ]
+            }
         ]
     },
     "statusLine": {
         "type": "command",
-        "command": "~/.claude/statusline.sh"
+        "command": "oh-my-posh claude --config $DOTFILES/themes/oh-my-posh.claude.json",
+        "padding": 0
     },
     "enabledPlugins": {
         "caveman@caveman": true,
@@ -216,7 +254,12 @@
         "security-guidance@claude-plugins-official": true,
         "skill-creator@claude-plugins-official": true,
         "superpowers@claude-plugins-official": true,
-        "terraform-skill@antonbabenko": true
+        "terraform-skill@antonbabenko": true,
+        "chrome-devtools-mcp@claude-plugins-official": true,
+        "aws-core@agent-toolkit-for-aws": false,
+        "pyright-lsp@claude-plugins-official": true,
+        "claude-code-setup@claude-plugins-official": true,
+        "pydantic-ai@claude-plugins-official": true
     },
     "extraKnownMarketplaces": {
         "astral-sh": {
@@ -235,6 +278,18 @@
             "source": {
                 "source": "github",
                 "repo": "antonbabenko/terraform-skill"
+            }
+        },
+        "chrome-devtools-plugins": {
+            "source": {
+                "source": "github",
+                "repo": "ChromeDevTools/chrome-devtools-mcp"
+            }
+        },
+        "agent-toolkit-for-aws": {
+            "source": {
+                "source": "github",
+                "repo": "aws/agent-toolkit-for-aws"
             }
         }
     },
