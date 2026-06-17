@@ -1,0 +1,56 @@
+# General
+storage_path = "/Users/joseph/notes"
+mouse_enabled = true
+confirm_on_delete = true
+
+[list]
+preview_enabled = true
+preview_position = "right"
+preview_encryption = false
+show_date_in_list = true
+show_file_size = false
+date_format = "%Y-%m-%d"
+density = "comfortable"
+default_view = "tree"
+default_sort_field = "title"
+default_sort_order = "descending"
+pinned_on_top = true
+
+[editor]
+external_command = "code"
+external_enabled = false
+preview_enabled = true
+show_line_numbers = true
+
+[theme]
+theme = "dracula"
+background = "transparent"
+background_color = "#282a36"
+
+[graf]
+preview_enabled = false
+
+[graf.visual]
+node_color_mode = "folder"
+label_mode = "selected"
+node_size = 2.0
+show_legend = true
+show_minimap = false
+
+[graf.visual.colors]
+node_color = "#ff6600"
+border_color = "#334455"
+
+[graf.physics]
+ideal_distance = 80.0
+
+[graf.interaction]
+drag_sensitivity = 1.0
+
+[display]
+show_status_bar = true
+border_style = "rounded"
+
+[graf.search]
+max_results = 20
+max_visible = 10

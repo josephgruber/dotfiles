@@ -79,6 +79,23 @@ export DO_NOT_TRACK=true
 export DOCKER_CONTENT_TRUST=1
 export DOTFILES="$HOME/.dotfiles"
 export EDITOR="code --wait"
+export EZA_COLORS="\
+uu=36:\
+uR=31:\
+un=35:\
+gu=37:\
+da=2;34:\
+ur=34:\
+uw=95:\
+ux=36:\
+ue=36:\
+gr=34:\
+gw=35:\
+gx=36:\
+tr=34:\
+tw=35:\
+tx=36:\
+xx=95:"
 export GH_TELEMETRY=false
 export HOMEBREW_NO_ENV_HINTS=1
 export PODMAN_COMPOSE_WARNING_LOGS=false
@@ -119,7 +136,10 @@ export FZF_DEFAULT_OPTS="
   --border
   --info=inline
   --header '⌃T: Files | ⌥C: Dirs | ⌃R: History'
-  --color='header:italic:underline,fg+:cyan'"
+  --color='fg:#f8f8f2,bg:#282a36,hl:#bd93f9'
+  --color='header:italic:underline,fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9'
+  --color='info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6'
+  --color='marker:#ff79c6,spinner:#ffb86c,header:#6272a4'"
 
 export FZF_CTRL_T_OPTS="
   --walker-skip .git,node_modules,target
