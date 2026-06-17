@@ -1,5 +1,4 @@
-# adjust-cell-height=1
-adjust-cell-height=2
+adjust-cell-height=10%	
 copy-on-select = clipboard
 desktop-notifications=true
 font-family=FiraCode Nerd Font
@@ -8,7 +7,6 @@ font-thicken=true
 keybind=shift+enter=text:\n
 keybind = cmd+shift+right=next_tab
 keybind = cmd+shift+left=previous_tab
-# keybind = global:cmd+shift+1=toggle_quick_terminal
 macos-non-native-fullscreen=true
 macos-titlebar-style=tabs
 mouse-hide-while-typing=true
@@ -40,7 +38,7 @@ cursor-opacity = 0.8
 
 # Performance
 scrollback-limit = 100000
-resize-overlay = never
+resize-overlay = always
 
 # Split keybindings. SAND pattern (Split, Across, Navigate, Destroy).
 keybind = super+d=new_split:right
@@ -61,7 +59,8 @@ keybind = super+4=goto_tab:4
 keybind = super+5=goto_tab:5
 
 # Quick terminal
-keybind = global:super+grave_accent=toggle_quick_terminal
+# keybind = global:super+grave_accent=toggle_quick_terminal
+keybind = global:cmd+shift+1=toggle_quick_terminal
 quick-terminal-position = top
 quick-terminal-screen = main
 quick-terminal-animation-duration = 0.15
